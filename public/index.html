@@ -50,11 +50,22 @@
 	</footer>
 	<script type="text/javascript" src="js/lib/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="js/lib/materialize.min.js"></script>
+	<script type="text/javascript" src="js/lib/underscore-min.js"></script>
+	<script type="text/javascript" src="js/lib/backbone-min.js"></script>
+	<script type="text/javascript" src="js/lib/sea.js"></script>
+	<script type="text/javascript" src="js/lib/seajs-text.js"></script>
 	<script type="text/javascript">
 	$(function(){
 		$(".button-collapse").sideNav();
 		$(".dropdown-button").dropdown();
 	});
+	seajs.config({
+		base: './js/',
+		alias: {
+			'modal': 'util/MaterializeModal'
+		}
+	});
+	seajs.use('./js/util/test');
 	</script>
 </body>
 </html>
