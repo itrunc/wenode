@@ -1,1 +1,60 @@
-Congrats, you just set up your cloud code project.
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<link rel="stylesheet" type="text/css" href="css/materialize.min.css"  media="screen,projection">
+</head>
+<body>
+	<header>
+		<nav>
+			<div class="nav-wrapper blue accent-1">
+				<a href="/" class="brand-logo">WeNode</a>
+				<a href="#" data-activates="sr-collapse" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+				<ul class="right">
+					<li><a class="dropdown-button" href="#" data-activates="dropdown-user">User<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+				</ul>
+				<ul class="right hide-on-med-and-down">
+					<li><a href="#">Admin</a></li>
+				</ul>
+				<ul class="side-nav" id="sr-collapse">
+					<li><a href="#">Admin</a></li>
+				</ul>
+			</div>
+		</nav>
+		<ul id="dropdown-user" class="dropdown-content">
+			<li><a href="#">Login</a></li>
+			<li><a href="#">Register</a></li>
+		</ul>
+	</header>
+	<div class="valign-wrapper" style="height:200px">
+		<h5 class="valign">This should be vertically aligned</h5>
+	</div>
+	<div class="row">
+		<div class="col s12 m2 l1 teal lighten-2">1</div>
+		<div class="col s12 m2 l1 teal lighten-2">2</div>
+		<div class="col s12 m2 l1">3</div>
+		<div class="col s12 m2 l1">4</div>
+		<div class="col s12 m2 l1">5</div>
+		<div class="col s12 m2 l1">6</div>
+		<div class="col s12 m2 l1">7</div>
+		<div class="col s12 m2 l1">8</div>
+		<div class="col s12 m2 l1">9</div>
+		<div class="col s12 m2 l1">10</div>
+		<div class="col s12 m2 l1">11</div>
+		<div class="col s12 m2 l1">12</div>
+	</div>
+	<footer>
+		<p class="center-align">Copyright &copy; wenode</p>
+	</footer>
+	<script type="text/javascript" src="js/lib/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="js/lib/materialize.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$(".button-collapse").sideNav();
+		$(".dropdown-button").dropdown();
+	});
+	</script>
+</body>
+</html>
