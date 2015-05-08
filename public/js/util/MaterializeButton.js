@@ -10,6 +10,9 @@ define(function(require, exports, module) {
 			this.modal = options.modal;
 			this.label = options.label || defaults.label;
 			this.action = _.isFunction(options.action) ? options.action : defaults.action;
+			if(options.cssClass) {
+				$(this.el).addClass(options.cssClass);
+			}
 		},
 		events: {
 			'click': 'onClick'
