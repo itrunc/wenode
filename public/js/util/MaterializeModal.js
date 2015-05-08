@@ -10,12 +10,14 @@ define(function(require, exports, module) {
 			var defaults = {
 				title: 'Dialog',
 				message: '',
-				buttons: [],
+				buttons: [], //{label: '', cssClass: '', action: function}
 				dismissible: true,
 				opacity: .5,
 				in_duration: 300,
 				out_duration: 200,
-				autodestroy: true
+				autodestroy: true,
+				//onOpen: function() {},
+				//onClosed: function() {}
 			};
 			var config = {
 				dismissible: options.dismissible==undefined ? defaults.dismissible : options.dismissible,
@@ -88,6 +90,9 @@ define(function(require, exports, module) {
 					}
 				}]
 			});
+		},
+		show: function(options) {
+			new Modal(options);
 		}
 	};
 
