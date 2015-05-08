@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
 	module.exports = Backbone.View.extend({
 		tagName: 'button',
-		className: 'modal-action waves-effect waves-green btn-flat',
+		className: 'waves-effect waves-green btn-flat',
 		initialize: function(options) {
 			var defaults = {
 				label:  'Button',
