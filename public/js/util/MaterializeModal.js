@@ -35,7 +35,8 @@ define(function(require, exports, module) {
 					var btn = new MButton({
 						modal: self,
 						label: options.buttons[i].label,
-						action: options.buttons[i].action
+						action: options.buttons[i].action,
+						cssClass: options.buttons[i].cssClass
 					});
 					el.find('.modal-footer').append(btn.render().el);
 				}
@@ -54,6 +55,7 @@ define(function(require, exports, module) {
 			var modal = new Modal({
 				title: title,
 				message: message,
+				dismissible: false,
 				buttons: [{
 					label: label,
 					action: function(modal) {
@@ -77,6 +79,7 @@ define(function(require, exports, module) {
 					}
 				}, {
 					label: options.btnOKLabel || 'OK',
+					cssClass: options.btnOKClass || 'teal lighten-2',
 					action: function(modal) {
 						if(options.callback && _.isFunction(options.callback)) {
 							options.callback(true);
