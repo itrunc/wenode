@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-	var MButton = require('button');
+	var MButton = require('MButton');
 	var Modal = Backbone.View.extend({
 		tagName: 'div',
 		className: 'modal modal-fixed-footer',
