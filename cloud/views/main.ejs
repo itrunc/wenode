@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<title><%=title%></title>
+	<link rel="stylesheet" type="text/css" href="/css/materialize.min.css"  media="screen,projection">
+</head>
+<body>
+	<%-main%>
+	<footer>
+		<p class="center-align">Copyright &copy; wenode</p>
+	</footer>
+	<script type="text/javascript" src="/js/lib/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="/js/lib/materialize.min.js"></script>
+	<script type="text/javascript" src="/js/lib/underscore-min.js"></script>
+	<script type="text/javascript" src="/js/lib/backbone-min.js"></script>
+	<script type="text/javascript" src="/js/lib/sea.js"></script>
+	<script type="text/javascript" src="/js/lib/seajs-text.js"></script>
+	<script type="text/javascript">
+	seajs.config({
+		base: '/js/',
+		alias: {
+			'MDialog': 'util/MaterializeModal',
+			'MButton': 'util/MaterializeButton',
+			'handlebars': 'lib/handlebars-v3.0.3',
+		}
+	});
+	seajs.use('/js/main/<%=appname%>');
+	</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<div class="row">
+	<div class="col s12 m6 offset-m3 l4 offset-l4">
+		<form class="card" method="post" action="/user">
+			<div class="card-content">
+				<span class="card-title black-text">重新发送激活邮件</span>
+				<div class="input-field">
+					<label>注册邮箱</label>
+					<input name="email" type="email" class="validate">
+				</div>
+				<input name="type" type="hidden" value="activate">
+				<input class="captcha-input" name="{{captcha.imageFieldName}}" type="hidden">
+			</div>
+			<div class="card-action">
+				<p>请选择以下图片中的 <b>{{captcha.imageName}}</b></p>
+				<div class="row">
+					{{#each captcha.values}}
+					<div class="col s2">
+						<img class="captcha-img" title="" alt="" data-index="{{@index}}" src="/captcha/image/{{@index}}?r={{../now}}">
+					</div>
+					{{/each}}
+				</div>
+				<p><button type="submit" class="waves-effect btn">提交</button></p>
+			</div>
+		</form>
+	</div>
+</div>

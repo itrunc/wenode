@@ -1,0 +1,42 @@
+<div class="row">
+	<div class="col s12 m6 offset-m3 l4 offset-l4">
+		<form class="card" method="post" action="/user">
+			<div class="card-content">
+				<span class="card-title black-text">账户注册</span>
+				<p>已绑定第三方帐号，请点击图标进入</p>
+				<div class="input-field">
+					<label>用户名</label>
+					<input name="username" type="text" class="validate">
+				</div>
+				<div class="input-field">
+					<label>Email</label>
+					<input name="email" type="email" class="validate">
+				</div>
+				<div class="input-field">
+					<label>密码</label>
+					<input name="password" type="password" class="validate">
+				</div>
+				<div class="input-field">
+					<label>确认密码</label>
+					<input name="password2" type="password" class="validate">
+				</div>
+				<input name="type" type="hidden" value="signup">
+				<input class="captcha-input" name="{{captcha.imageFieldName}}" type="hidden">
+			</div>
+			<div class="card-action">
+				<p>请选择以下图片中的 <b>{{captcha.imageName}}</b></p>
+				<div class="row">
+					{{#each captcha.values}}
+					<div class="col s2">
+						<img class="captcha-img" title="" alt="" data-index="{{@index}}" src="/captcha/image/{{@index}}?r={{../now}}">
+					</div>
+					{{/each}}
+				</div>
+				<p>
+					<button type="submit" class="waves-effect btn">注册</button>
+					<a href="/user#signin" class="waves-effect btn-flat">已注册点此登录</a>
+				</p>
+			</div>
+		</form>
+	</div>
+</div>
