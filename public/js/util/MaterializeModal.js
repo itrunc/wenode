@@ -92,7 +92,7 @@ define(function(require, exports, module) {
 			});
 		},
 		show: function(options) {
-			new Modal(options);
+			return (new Modal(options));
 		}
 	};
 
