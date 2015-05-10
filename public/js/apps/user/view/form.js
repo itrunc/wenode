@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
 
-	var Captcha = require('apps/user/view/captcha');
+	var Captcha = require('apps/user/view/captcha'),
+		Dialog = require('MDialog');
 
 	var View = Backbone.View.extend({
 		el: '#main',
@@ -35,8 +36,22 @@ define(function(require, exports, module) {
 			var form = $(e.target).ajaxSubmit();
 			var xhr = form.data('jqxhr');
 			xhr.done(function() {
-				window.location.href=xhr.responseText;
+				var data = xhr.responseJSON;
+				if(data) {
+					var dialog = Dialog.show({
+						dismissible: false,
+						title: data.title,
+						message: data.message
+					});
+					if(data.url) setTimeout(function(){
+						dialog.close();
+						window.location.href = data.url;
+					}, 2000);
+				} else {
+					window.location.href=xhr.responseText;
+				}
 			}).fail(function() {
+				console.log(xhr);
 				Materialize.toast(xhr.responseText, 3000, 'red darken-1')
 				if(self.captcha) self.resetCaptcha();
 			});
