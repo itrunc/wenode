@@ -7,8 +7,8 @@ define(function(require, exports, module) {
 				brand: this.getAnchor('/', 'WeNode'),
 				admin: this.getAnchor('#', 'Admin'),
 				other: this.getAnchor('#', 'Other'),
-				login: this.getAnchor('#', 'Login'),
-				register: this.getAnchor('#', 'Register')
+				login: this.getAnchor('/user#signin', 'Login'),
+				register: this.getAnchor('/user#signup', 'Register')
 			};
 			this.$el.html( this.template({
 				brand: this.menu.brand,
