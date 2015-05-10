@@ -57,7 +57,11 @@ var verifyCaptcha = function(req, res, options) {
 	if( imageAnswer && visualCaptcha.validateImage(imageAnswer) ) {
 		if(options.success && _.isFunction(options.success)) options.success();
 	} else {
-		if(options.fail && _.isFunction(options.fail)) options.fail();
+		if(options.fail && _.isFunction(options.fail)) {
+			options.fail();
+		} else {
+			res.status(403).send('验证码不正确');
+		}
 	}
 };
 app.get('/user', function(req, res) {
@@ -73,9 +77,6 @@ app.post('/user', function(req, res) {
 			verifyCaptcha(req, res, {
 				success: function() {
 					res.json(req.body);
-				},
-				fail: function() {
-					res.status(403).send('Captcha not validated');
 				}
 			});
 			break;
@@ -83,9 +84,6 @@ app.post('/user', function(req, res) {
 			verifyCaptcha(req, res, {
 				success: function() {
 					res.json(req.body);
-				},
-				fail: function() {
-					res.status(403).send('Captcha not validated');
 				}
 			});
 			break;
@@ -93,9 +91,6 @@ app.post('/user', function(req, res) {
 			verifyCaptcha(req, res, {
 				success: function() {
 					res.json(req.body);
-				},
-				fail: function() {
-					res.status(403).send('Captcha not validated');
 				}
 			});
 			break;
@@ -103,9 +98,6 @@ app.post('/user', function(req, res) {
 			verifyCaptcha(req, res, {
 				success: function() {
 					res.json(req.body);
-				},
-				fail: function() {
-					res.status(403).send('Captcha not validated');
 				}
 			});
 			break;
