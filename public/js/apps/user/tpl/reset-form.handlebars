@@ -8,17 +8,9 @@
 					<input name="email" type="email" class="validate">
 				</div>
 				<input name="type" type="hidden" value="reset">
-				<input class="captcha-input" name="{{captcha.imageFieldName}}" type="hidden">
 			</div>
 			<div class="card-action">
-				<p>请选择以下图片中的 <b>{{captcha.imageName}}</b></p>
-				<div class="row">
-					{{#each captcha.values}}
-					<div class="col s2">
-						<img class="captcha-img" title="" alt="" data-index="{{@index}}" src="/captcha/image/{{@index}}?r={{../now}}">
-					</div>
-					{{/each}}
-				</div>
+				<div class="input-captcha"></div>
 				<p>
 					<button type="submit" class="waves-effect btn">重置密码</button>
 					<a href="/user#signin" class="waves-effect btn-flat">登录</a>

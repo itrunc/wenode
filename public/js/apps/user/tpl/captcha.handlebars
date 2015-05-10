@@ -1,0 +1,7 @@
+<p>请选择以下图片中的 <b>{{captcha.imageName}}</b></p>
+{{#each captcha.values}}
+<div class="col s2">
+	<img class="captcha-img" title="" alt="" data-index="{{@index}}" src="/captcha/image/{{@index}}?r={{../now}}">
+</div>
+{{/each}}
+<input class="captcha-input" name="{{captcha.imageFieldName}}" type="hidden">

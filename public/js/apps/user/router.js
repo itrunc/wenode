@@ -15,10 +15,10 @@ define(function(require, exports, module) {
 		loginPage: function() {
 			var self = this;
 			if(self.currentApp) self.currentApp.undelegateEvents();
-			var App = require('apps/user/view/login');
 			$.getJSON(this.captchaUrl+_.now(), function(data) {
-				self.currentApp = new App({
-					captcha: data
+				self.currentApp = require('apps/user/view/form')({
+					captcha: data,
+					template: require('apps/user/tpl/login-form.handlebars')
 				});
 			});
 			setTitle('用户登录');
@@ -26,10 +26,10 @@ define(function(require, exports, module) {
 		registerPage: function() {
 			var self = this;
 			if(this.currentApp) this.currentApp.undelegateEvents();
-			var App = require('apps/user/view/register');
 			$.getJSON(this.captchaUrl+_.now(), function(data) {
-				self.currentApp = new App({
-					captcha: data
+				self.currentApp = require('apps/user/view/form')({
+					captcha: data,
+					template: require('apps/user/tpl/register-form.handlebars')
 				});
 			});
 			setTitle('用户注册');
@@ -37,10 +37,10 @@ define(function(require, exports, module) {
 		resetPage: function() {
 			var self = this;
 			if(this.currentApp) this.currentApp.undelegateEvents();
-			var App = require('apps/user/view/reset');
 			$.getJSON(this.captchaUrl+_.now(), function(data) {
-				self.currentApp = new App({
-					captcha: data
+				self.currentApp = require('apps/user/view/form')({
+					captcha: data,
+					template: require('apps/user/tpl/reset-form.handlebars')
 				});
 			});
 			setTitle('重置密码');
@@ -48,10 +48,10 @@ define(function(require, exports, module) {
 		activatePage: function() {
 			var self = this;
 			if(this.currentApp) this.currentApp.undelegateEvents();
-			var App = require('apps/user/view/activate');
 			$.getJSON(this.captchaUrl+_.now(), function(data) {
-				self.currentApp = new App({
-					captcha: data
+				self.currentApp = require('apps/user/view/form')({
+					captcha: data,
+					template: require('apps/user/tpl/activate-form.handlebars')
 				});
 			});
 			setTitle('重新发送激活邮件');
