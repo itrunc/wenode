@@ -45,6 +45,11 @@ var signIn = function(req, res) {
 	});
 };
 
+var logOut = function(req, res) {
+	AV.User.logOut();
+	res.redirect('/');
+};
+
 var signUp = function(req, res) {
 	if(req.body.password === req.body.password2) {
 		AV.User.logOut();
@@ -71,6 +76,36 @@ var signUp = function(req, res) {
 	}
 };
 
+var reset = function(req, res) {
+	AV.User.requestPasswordReset(req.body.email, {
+		success: function() {
+			res.status(200).json({
+				title: '邮件已发送',
+				message: '请登录您的邮箱: '+req.body.email+' 查收重置密码的邮件',
+				url: '/'
+			});
+		},
+		error: function(err) {
+			res.status(500).json(err);
+		}
+	});
+};
+
+var activate = function(req, res) {
+	 AV.User.requestEmailVerify(req.body.email, {
+		success: function() {
+			res.status(200).json({
+				title: '邮件已发送',
+				message: '请登录您的邮箱: '+req.body.email+' 查收激活邮件',
+				url: '/'
+			});
+		},
+		error: function(err) {
+			res.status(500).json(err);
+		}
+	});
+};
+
 var post = function(req, res) {
 	switch(req.body.type) {
 		case 'signin':
@@ -80,18 +115,10 @@ var post = function(req, res) {
 			verifyCaptcha(req, res, signUp);
 			break;
 		case 'reset':
-			verifyCaptcha(req, res, {
-				success: function() {
-					res.json(req.body);
-				}
-			});
+			verifyCaptcha(req, res, reset);
 			break;
 		case 'activate':
-			verifyCaptcha(req, res, {
-				success: function() {
-					res.json(req.body);
-				}
-			});
+			verifyCaptcha(req, res, activate);
 			break;
 		default: 
 			res.send('default');
@@ -102,5 +129,6 @@ module.exports = {
 	render: render,
 	startCaptcha: startCaptcha,
 	replyImageCaptcha: replyImageCaptcha,
-	post: post
+	post: post,
+	logOut: logOut
 };

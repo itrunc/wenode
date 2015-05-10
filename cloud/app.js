@@ -26,6 +26,7 @@ app.use( sessions({
 app.get('/captcha/start/:howmany', userApp.startCaptcha);
 app.get('/captcha/image/:index', userApp.replyImageCaptcha);
 app.get('/user', userApp.render);
+app.get('/user/logout', userApp.logOut);
 app.post('/user', userApp.post);
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求

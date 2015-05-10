@@ -41,12 +41,12 @@ define(function(require, exports, module) {
 					var dialog = Dialog.show({
 						dismissible: false,
 						title: data.title,
-						message: data.message
+						message: data.message + '<p>将在5秒后跳转</p>'
 					});
 					if(data.url) setTimeout(function(){
 						dialog.close();
 						window.location.href = data.url;
-					}, 2000);
+					}, 5000);
 				} else {
 					window.location.href=xhr.responseText;
 				}
