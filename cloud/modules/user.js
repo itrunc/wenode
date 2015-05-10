@@ -39,7 +39,7 @@ var verifyCaptcha = function(req, res, callback) {
 
 var signIn = function(req, res) {
 	AV.User.logIn(req.body.username, req.body.password).then(function() {
-		res.status(200).send('/');
+		res.status(200).send('/admin');
 	}, function(error) {
 		res.status(500).json(error);
 	});
