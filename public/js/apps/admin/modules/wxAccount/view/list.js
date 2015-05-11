@@ -1,7 +1,10 @@
 define(function(require, exports, module) {
+	var dialog = require('MDialog'),
+		WechatModel = require('model/Wechat'),
+		WechatFormView = require('apps/admin/modules/wxAccount/view/form');
 	var View = Backbone.View.extend({
 		el: '#main',
-		template: '<div id="list" class="row"></div>',
+		template: require('apps/admin/modules/wxAccount/tpl/list.html'),
 		initialize: function(options) {
 			this.$el.html( this.template );
 
@@ -12,7 +15,9 @@ define(function(require, exports, module) {
 
 			//TODO: fetch
 		},
-		events: { },
+		events: {
+			'click #btn-create': 'onCreate'
+		},
 		render: function() {},
 		addOne: function(obj) {
 			var view = require('apps/admin/modules/wxAccount/view/item')();
@@ -20,6 +25,29 @@ define(function(require, exports, module) {
 		},
 		addAll: function() {
 			this.list.each(this.addOne, this);
+		},
+		onCreate: function(e) {
+			var formView = new WechatFormView({
+				model: new WechatModel
+			});
+			dialog.show({
+				title: '添加微信公众号',
+				message: formView.render().el,
+				withFixedFooter: false,
+				dismissible: false,
+				buttons: [{
+					label: '保存',
+					action: function() {
+						formView.submit();
+					}
+				}, {
+					label: '取消',
+					cssClass: 'btn-flat',
+					action: function(modal) {
+						modal.close();
+					}
+				}]
+			});
 		}
 	});
 
