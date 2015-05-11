@@ -9,7 +9,7 @@ define(function(require, exports, module) {
 			intro: '',
 			appid: '',
 			appSecret: '',
-			token: '',
+			token: 'wenode.avosapps.com',
 			encodingAESKey: '',
 			method: ''
 		},
