@@ -2,9 +2,9 @@ define(function(require, exports, module) {
 	var MButton = require('MButton');
 	var Modal = Backbone.View.extend({
 		tagName: 'div',
-		className: 'modal modal-fixed-footer',
+		className: 'modal',
 		template: '<div class="modal-content"><div class="modal-body"></div></div><div class="modal-footer"></div>',
-		headerTemplate: '<h3 class="modal-header"></h3>',
+		headerTemplate: '<h5 class="modal-header"></h5>',
 		initialize: function(options) {
 			var self = this;
 			options = options || {};
@@ -17,7 +17,8 @@ define(function(require, exports, module) {
 				in_duration: 300,
 				out_duration: 200,
 				autodestroy: true,
-				withHeader: true
+				withHeader: true,
+				withFixedFooter: true
 				//onOpen: function() {},
 				//onClosed: function() {}
 			};
@@ -31,6 +32,8 @@ define(function(require, exports, module) {
 			}
 			this.autodestroy = options.autodestroy==undefined ? defaults.autodestroy : options.autodestroy;
 			var el = $(this.el);
+			var isFixedFooter = typeof options.withFixedFooter==='undefined' ? defaults.withFixedFooter : options.withFixedFooter;
+			if(isFixedFooter) el.addClass('modal-fixed-footer');
 			el.html(this.template);
 			var hasHeader = typeof options.withHeader==='undefined' ? defaults.withHeader : options.withHeader;
 			if(hasHeader) {
