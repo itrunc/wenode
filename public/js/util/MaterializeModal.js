@@ -3,7 +3,8 @@ define(function(require, exports, module) {
 	var Modal = Backbone.View.extend({
 		tagName: 'div',
 		className: 'modal modal-fixed-footer',
-		template: '<div class="modal-content"><h3 class="modal-header"></h3><div class="modal-body"></div></div><div class="modal-footer"></div>',
+		template: '<div class="modal-content"><div class="modal-body"></div></div><div class="modal-footer"></div>',
+		headerTemplate: '<h3 class="modal-header"></h3>',
 		initialize: function(options) {
 			var self = this;
 			options = options || {};
@@ -16,6 +17,7 @@ define(function(require, exports, module) {
 				in_duration: 300,
 				out_duration: 200,
 				autodestroy: true,
+				withHeader: true
 				//onOpen: function() {},
 				//onClosed: function() {}
 			};
@@ -30,7 +32,11 @@ define(function(require, exports, module) {
 			this.autodestroy = options.autodestroy==undefined ? defaults.autodestroy : options.autodestroy;
 			var el = $(this.el);
 			el.html(this.template);
-			el.find('.modal-header').html(options.title || defaults.title);
+			var hasHeader = typeof options.withHeader==='undefined' ? defaults.withHeader : options.withHeader;
+			if(hasHeader) {
+				el.find('.modal-content').prepend(this.headerTemplate);
+				el.find('.modal-header').html(options.title || defaults.title);
+			}
 			el.find('.modal-body').html(options.message || defaults.message);
 			if(options.buttons && options.buttons.length > 0) {
 				for(var i in options.buttons) {
