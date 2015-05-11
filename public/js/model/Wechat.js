@@ -2,12 +2,12 @@ define(function(require, exports, module) {
 
 	module.exports = Backbone.Model.extend({
 		defaults: {
-			sourceId: '',
+			sourceid: '',
 			code: '',
 			name: '',
 			type: '',
-			info: '',
-			appId: '',
+			intro: '',
+			appid: '',
 			appSecret: '',
 			token: '',
 			encodingAESKey: '',
@@ -25,10 +25,10 @@ define(function(require, exports, module) {
 		idAttribute: 'objectId',
 		initialize: function() {},
 		validate: function(attrs, options) {
-			if(attrs.sourceId.length==0) return 'Not Allowed empty Source Id';
+			if(attrs.sourceid.length==0) return 'Not Allowed empty Source Id';
 			if(attrs.code.length==0) return 'Not Allowed empty Account code';
 			if(attrs.name.length==0) return 'Not Allowed empty Account name';
-			if(attrs.appId.length==0) return 'Not Allowed empty AppId';
+			if(attrs.appid.length==0) return 'Not Allowed empty AppId';
 			if(attrs.token.length==0) return 'Not Allowed empty Token';
 			if( _.indexOf(_.values(this.WechatType), attrs.type) < 0 ) return 'Not Allowed Type';
 			if( _.indexOf(_.values(this.EncryptMethod), attrs.method) < 0) return 'Not Allowed Method';
