@@ -52,6 +52,8 @@ define(function(require, exports, module) {
 					el.find('.modal-footer').append(btn.render().el);
 				}
 			}
+			if(options.height) $(this.el).css({'height': options.height});
+			if(options.width) $(this.el).css({'width': options.width});
 			$('body').append(this.el);
 			$(this.el).openModal(config);
 		},
@@ -62,11 +64,14 @@ define(function(require, exports, module) {
 	});
 
 	module.exports = {
-		alert: function(message, title, label) {
+		alert: function(message, title, label, size) {
+			size = size || {};
 			var modal = new Modal({
 				title: title,
 				message: message,
 				dismissible: false,
+				height: size.height || '210px',
+				width: size.width || '400px',
 				buttons: [{
 					label: label,
 					action: function(modal) {
@@ -80,8 +85,11 @@ define(function(require, exports, module) {
 			var modal = new Modal({
 				title: options.title || 'Confirm',
 				message: options.message || '?',
+				height: options.height || '230px',
+				width: options.width || '420px',
 				buttons: [{
 					label: options.btnCancelLabel || 'Cancel',
+					cssClass: options.btnCancelClass || 'btn-flat',
 					action: function(modal) {
 						if(options.callback && _.isFunction(options.callback)) {
 							options.callback(false);
