@@ -5,7 +5,7 @@ define(function(require, exports, module) {
 		initialize: function(options) {
 			this.menu = {
 				brand: this.getAnchor('/', 'WeNode'),
-				admin: this.getAnchor('#', 'Admin'),
+				admin: this.getAnchor('/admin', 'Admin'),
 				logout: this.getAnchor('/user/logout', 'Logout')
 			};
 			this.$el.html( this.template({
