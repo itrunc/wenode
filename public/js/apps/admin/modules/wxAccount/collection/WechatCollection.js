@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
 	var Collection = Backbone.Collection.extend({
 		model: require('model/Wechat'),
-		url: '/admin/model/wechat'
+		url: '/admin/model/account_list'
 	});
 
 	module.exports = function() {

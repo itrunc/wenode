@@ -1,19 +1,19 @@
 <div class="row">
 	<div class="col s12 m6">
 		<div class="input-field">
-			<label>公众号名称</label>
-			<input type="text" name="name" class="validate" value="{{model.name}}">
+			<label {{#if isEdit}}class="active"{{/if}}>公众号名称</label>
+			<input type="text" name="name" class="validate" value="{{model.name}}" {{#if isEdit}}disabled{{/if}}>
 		</div>
 		<div class="input-field">
-			<label>微信号</label>
-			<input type="text" name="code" class="validate" value="{{model.code}}">
+			<label {{#if isEdit}}class="active"{{/if}}>微信号</label>
+			<input type="text" name="code" class="validate" value="{{model.code}}" {{#if isEdit}}disabled{{/if}}>
 		</div>
 		<div class="input-field">
-			<label>原始ID</label>
-			<input type="text" name="sourceid" class="validate" value="{{model.sourceid}}">
+			<label {{#if isEdit}}class="active"{{/if}}>原始ID</label>
+			<input type="text" name="sourceid" class="validate" value="{{model.sourceid}}" {{#if isEdit}}disabled{{/if}}>
 		</div>
 		<div class="input-field">
-			<select name="type">
+			<select name="type" {{#if isEdit}}disabled{{/if}}>
 				<option value="{{type.SUBSCRIBE}}" {{#eq model.type type.SUBSCRIBE}}selected{{/eq}}>订阅号</option>
 				<option value="{{type.SERVE}}" {{#eq model.type type.SERVE}}selected{{/eq}}>服务号</option>
 			</select>
@@ -22,15 +22,15 @@
 	</div>
 	<div class="col s12 m6">
 		<div class="input-field">
-			<label>appId</label>
-			<input type="text" name="appid" class="validate" value="{{model.appid}}">
+			<label {{#if isEdit}}class="active"{{/if}}>appId</label>
+			<input type="text" name="appid" class="validate" value="{{model.appid}}" {{#if isEdit}}disabled{{/if}}>
 		</div>
 		<div class="input-field">
-			<label>appSecret</label>
+			<label {{#if isEdit}}class="active"{{/if}}>appSecret</label>
 			<input type="text" name="appSecret" class="validate" value="{{model.appSecret}}">
 		</div>
 		<div class="input-field">
-			<label>EncodingAESKey</label>
+			<label {{#if isEdit}}class="active"{{/if}}>EncodingAESKey</label>
 			<input type="text" name="encodingAESKey" class="validate" value="{{model.encodingAESKey}}">
 		</div>
 		<div class="input-field">
@@ -45,10 +45,10 @@
 	<div class="col s12">
 		<div class="input-field">
 			<label class="active">Token</label>
-			<input type="text" name="token" class="validate" value="{{model.token}}" readonly>
+			<input type="text" name="token" class="validate" value="{{model.token}}" readonly {{#if isEdit}}disabled{{/if}}>
 		</div>
 		<div class="input-field">
-			<label>介绍</label>
+			<label {{#if isEdit}}class="active"{{/if}}>介绍</label>
 			<textarea name="intro" class="materialize-textarea">{{model.intro}}</textarea>
 		</div>
 	</div>

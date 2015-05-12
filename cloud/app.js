@@ -31,6 +31,10 @@ app.get('/user/logout', userApp.logOut);
 app.post('/user', userApp.post);
 
 app.get('/admin', adminApp.render);
+app.post('/admin/model/:model', adminApp.createModel);
+app.get('/admin/model/:model', adminApp.fetchModels);
+app.put('/admin/model/:model/:id', adminApp.updateModel);
+app.delete('/admin/model/:model/:id', adminApp.destroyModel);
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
 app.listen();

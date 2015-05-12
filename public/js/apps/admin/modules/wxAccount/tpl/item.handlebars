@@ -1,1 +1,22 @@
-item
+<div class="collapsible-header">
+	<i class="mdi-image-blur-on"></i>
+	{{#eq model.type type.SUBSCRIBE}}订阅号{{/eq}}
+	{{#eq model.type type.SERVE}}服务号{{/eq}}
+	- {{model.name}}
+</div>
+<div class="collapsible-body">
+	<p>
+	{{model.sourceid}}<br>
+	{{model.code}}<br>
+	{{model.appid}}<br>
+	{{model.appSecret}}<br>
+	{{model.token}}<br>
+	{{model.encodingAESKey}}<br>
+	{{model.method}}<br>
+	{{model.intro}}
+	</p>
+	<p>
+	<a class="btn-edit btn-floating waves-effect waves-light green"><i class="mdi-image-edit"></i></a>
+	<a class="btn-remove btn-floating waves-effect waves-light red"><i class="mdi-content-clear"></i></a>
+	</p>
+</div>

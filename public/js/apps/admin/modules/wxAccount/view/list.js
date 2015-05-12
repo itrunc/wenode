@@ -2,6 +2,9 @@ define(function(require, exports, module) {
 	var dialog = require('MDialog'),
 		WechatModel = require('model/Wechat'),
 		WechatFormView = require('apps/admin/modules/wxAccount/view/form');
+	var toast = function(message) {
+		Materialize.toast(message, 3000, 'red darken-1');
+	};
 	var View = Backbone.View.extend({
 		el: '#main',
 		template: require('apps/admin/modules/wxAccount/tpl/list.html'),
@@ -13,22 +16,36 @@ define(function(require, exports, module) {
 			this.listenTo(this.list, 'reset', this.addAll);
 			this.listenTo(this.list, 'all', this.render);
 
-			//TODO: fetch
+			this.list.fetch({
+				success: function(results, resp, opt) {
+					console.log(results, resp, opt);
+				},
+				error: function(results, resp, opt) {
+					toast(resp.responseText);
+				}
+			});
 		},
 		events: {
 			'click #btn-create': 'onCreate'
 		},
 		render: function() {},
-		addOne: function(obj) {
-			var view = require('apps/admin/modules/wxAccount/view/item')();
+		addOne: function(model) {
+			var view = require('apps/admin/modules/wxAccount/view/item')({
+				model: model
+			});
 			this.$el.find('#list').append(view.render().el);
+
+			this.$el.find('#list').collapsible();
 		},
 		addAll: function() {
 			this.list.each(this.addOne, this);
 		},
 		onCreate: function(e) {
+			var self = this;
+			var wechat = new WechatModel;
+			wechat.collection = this.list;
 			var formView = new WechatFormView({
-				model: new WechatModel
+				model: wechat
 			});
 			dialog.show({
 				title: '添加微信公众号',
@@ -37,8 +54,13 @@ define(function(require, exports, module) {
 				dismissible: false,
 				buttons: [{
 					label: '保存',
-					action: function() {
-						formView.submit();
+					action: function(modal) {
+						formView.submit({
+							success: function(obj,resp,opt) {
+								self.list.add(formView.model);
+								modal.close();
+							}
+						});
 					}
 				}, {
 					label: '取消',
