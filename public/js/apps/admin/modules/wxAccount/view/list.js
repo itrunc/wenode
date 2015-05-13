@@ -2,12 +2,12 @@ define(function(require, exports, module) {
 	var dialog = require('MDialog'),
 		WechatModel = require('model/Wechat'),
 		WechatFormView = require('apps/admin/modules/wxAccount/view/form');
-	var toast = function(message) {
-		Materialize.toast(message, 3000, 'red darken-1');
-	};
 	var View = Backbone.View.extend({
 		el: '#main',
 		template: require('apps/admin/modules/wxAccount/tpl/list.html'),
+		pageIndex: 0,
+		pageSize: 5,
+		isEnd: false,
 		initialize: function(options) {
 			this.$el.html( this.template );
 
@@ -16,19 +16,38 @@ define(function(require, exports, module) {
 			this.listenTo(this.list, 'reset', this.addAll);
 			this.listenTo(this.list, 'all', this.render);
 
-			this.list.fetch({
-				success: function(results, resp, opt) {
-					console.log(results, resp, opt);
-				},
-				error: function(results, resp, opt) {
-					toast(resp.responseText);
-				}
-			});
+			this.fetch();
 		},
 		events: {
-			'click #btn-create': 'onCreate'
+			'click #btn-create': 'onCreate',
+			'click #btn-more': 'onLoad'
 		},
 		render: function() {},
+		fetch: function(option) {
+			option = option || {};
+			var self = this;
+			if(!this.isEnd) {
+				this.list.fetch({
+					data: {
+						index: this.pageIndex,
+						size: this.pageSize
+					},
+					success: function(results, resp, opt) {
+						if(results.length < self.pageSize) {
+							self.isEnd = true;
+							dialog.toast('已经加载全部的公众号');
+							self.$el.find('#btn-more').addClass('disabled');
+						}
+						self.pageIndex++;
+						if(option.success && _.isFunction(option.success)) option.success(results, resp, opt);
+					},
+					error: function(obj, resp, opt) {
+						dialog.toast(resp.responseText);
+						if(option.error && _.isFunction(option.error)) option.error(obj, resp, opt);
+					}
+				});
+			}
+		},
 		addOne: function(model) {
 			var view = require('apps/admin/modules/wxAccount/view/item')({
 				model: model
@@ -70,6 +89,9 @@ define(function(require, exports, module) {
 					}
 				}]
 			});
+		},
+		onLoad: function(e) {
+			this.fetch();
 		}
 	});
 
