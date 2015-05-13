@@ -17,10 +17,12 @@ define(function(require, exports, module) {
 			'click .btn-edit': 'onEdit'
 		},
 		render: function() {
+			var model = this.model.toJSON();
 			$(this.el).html( this.template({
-				model: this.model.toJSON(),
+				model: model,
 				type: this.model.WechatType,
-				method: this.model.EncryptMethod
+				method: this.model.EncryptMethod,
+				url: 'http://wenode.avosapps.com/interface/wechat?id=' + this.model.id + '&app=' + model.appid + '&key=' + model.encodingAESKey
 			}, {helpers: require('handlebars-helper')}) );
 			$(this.el).closest('#list').collapsible();
 			

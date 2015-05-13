@@ -5,18 +5,32 @@
 	- {{model.name}}
 </div>
 <div class="collapsible-body">
-	<p>
-	{{model.sourceid}}<br>
-	{{model.code}}<br>
-	{{model.appid}}<br>
-	{{model.appSecret}}<br>
-	{{model.token}}<br>
-	{{model.encodingAESKey}}<br>
-	{{model.method}}<br>
-	{{model.intro}}
-	</p>
-	<p>
-	<a class="btn-edit btn-floating waves-effect waves-light green"><i class="mdi-image-edit"></i></a>
-	<a class="btn-remove btn-floating waves-effect waves-light red"><i class="mdi-content-clear"></i></a>
-	</p>
+	<div class="collapsible-content">
+	{{#with model}}
+    <p class="row">
+      <span class="col s12 m6"><b>微信号: </b>{{code}}</span>
+			<span class="col s12 m6"><b>原始ID: </b>{{sourceid}}</span>
+		</p>
+		<p class="row">
+			<span class="col s12 m6"><b>AppId(应用ID): </b>{{appid}}</span>
+			<span class="col s12 m6"><b>AppSecret(应用密钥): </b>{{appSecret}}</span>
+		</p>
+		<p class="row">
+			<span class="col s12 m6">
+				<b>消息加解密方式: </b>
+				{{#eq method ../method.UNENCRYPTED}}明文模式{{/eq}}
+				{{#eq method ../method.COMPATIBLE}}兼容模式{{/eq}}
+				{{#eq method ../method.ENCRYPTED}}安全模式(推荐){{/eq}}
+			</span>
+      <span class="col s12 m6"><b>EncodingAESKey(消息加解密密钥): </b>{{encodingAESKey}}</span>
+		</p>
+		<p class="row"><span class="col s12"><b>介绍: </b>{{intro}}</span></p>
+		<p class="row"><span class="col s12"><b>Token(令牌): </b>{{token}}</span></p>
+		<p class="row"><span class="col s12"><b>URL(服务器地址): </b>{{../url}}</span></p>
+	{{/with}}
+		<p class="right-align">
+			<a class="btn-edit btn-floating waves-effect waves-light green"><i class="mdi-image-edit"></i></a>
+			<a class="btn-remove btn-floating waves-effect waves-light red"><i class="mdi-content-clear"></i></a>
+		</p>
+  </div>
 </div>
