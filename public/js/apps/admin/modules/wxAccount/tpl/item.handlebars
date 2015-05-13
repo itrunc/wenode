@@ -22,11 +22,11 @@
 				{{#eq method ../method.COMPATIBLE}}兼容模式{{/eq}}
 				{{#eq method ../method.ENCRYPTED}}安全模式(推荐){{/eq}}
 			</span>
-      <span class="col s12 m6"><b>EncodingAESKey(消息加解密密钥): </b>{{encodingAESKey}}</span>
+      <span class="col s12 m6 word-break"><b>EncodingAESKey(消息加解密密钥): </b><br>{{encodingAESKey}}</span>
 		</p>
-		<p class="row"><span class="col s12"><b>介绍: </b>{{intro}}</span></p>
+		<p class="row word-break"><span class="col s12"><b>介绍: </b><br>{{intro}}</span></p>
 		<p class="row"><span class="col s12"><b>Token(令牌): </b>{{token}}</span></p>
-		<p class="row"><span class="col s12"><b>URL(服务器地址): </b>{{../url}}</span></p>
+		<p class="row word-break"><span class="col s12"><b>URL(服务器地址): </b><br>{{../url}}</span></p>
 	{{/with}}
 		<p class="right-align">
 			<a class="btn-edit btn-floating waves-effect waves-light green"><i class="mdi-image-edit"></i></a>
