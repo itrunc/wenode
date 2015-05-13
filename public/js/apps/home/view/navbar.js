@@ -5,17 +5,17 @@ define(function(require, exports, module) {
 		initialize: function(options) {
 			this.menu = {
 				brand: this.getAnchor('/', 'WeNode'),
-				admin: this.getAnchor('/admin', 'Admin'),
+				account: this.getAnchor('/admin#account', '公众号管理'),
 				login: this.getAnchor('/user#signin', 'Login'),
 				register: this.getAnchor('/user#signup', 'Register')
 			};
 			this.$el.html( this.template({
 				brand: this.menu.brand,
 				main: [
-					this.menu.admin
+					this.menu.account
 				],
 				side: [
-					this.menu.admin
+					this.menu.account
 				],
 				user: {
 					label: 'User',

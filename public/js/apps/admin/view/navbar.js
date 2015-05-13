@@ -5,16 +5,16 @@ define(function(require, exports, module) {
 		initialize: function(options) {
 			this.menu = {
 				brand: this.getAnchor('/', 'WeNode'),
-				admin: this.getAnchor('/admin', 'Admin'),
+				account: this.getAnchor('/admin#account', '公众号管理'),
 				logout: this.getAnchor('/user/logout', 'Logout')
 			};
 			this.$el.html( this.template({
 				brand: this.menu.brand,
 				main: [
-					this.menu.admin
+					this.menu.account
 				],
 				side: [
-					this.menu.admin
+					this.menu.account
 				],
 				user: {
 					label: 'User',
