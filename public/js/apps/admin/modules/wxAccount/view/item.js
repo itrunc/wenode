@@ -1,9 +1,6 @@
 define(function(require, exports, module) {
 	var dialog = require('MDialog'),
 		WechatFormView = require('apps/admin/modules/wxAccount/view/form');
-	var toast = function(message) {
-		Materialize.toast(message, 3000, 'red darken-1');
-	};
 	var View = Backbone.View.extend({
 		tagName: 'li',
 		className: '',//col s12 m4
@@ -35,16 +32,16 @@ define(function(require, exports, module) {
 				message: '您将删除微信号：'+this.model.get('name')+'?',
 				btnOKClass: 'btn-flat',
 				btnOKLabel: '是',
-				btnCancelClass: 'blue',
+				//btnCancelClass: 'blue',
 				btnCancelLabel: '否',
 				callback: function(confirm) {
 					if(confirm) {
 						self.model.destroy({
 							success: function(model, resp, options) {
-								toast('删除成功');
+								dialog.toast('删除成功');
 							},
 							error: function(model, resp, options) {
-								toast(resp.responseText);
+								dialog.toast(resp.responseText);
 							},
 							wait: true
 						});
