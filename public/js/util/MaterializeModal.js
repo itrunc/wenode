@@ -64,6 +64,10 @@ define(function(require, exports, module) {
 	});
 
 	module.exports = {
+		toast: function(message, color) {
+			color = color || 'red';
+			Materialize.toast(message, 3000, color+' darken-1');
+		},
 		alert: function(message, title, label, size) {
 			size = size || {};
 			var modal = new Modal({
@@ -89,7 +93,7 @@ define(function(require, exports, module) {
 				width: options.width || '420px',
 				buttons: [{
 					label: options.btnCancelLabel || 'Cancel',
-					cssClass: options.btnCancelClass || 'btn-flat',
+					cssClass: options.btnCancelClass || 'btn',
 					action: function(modal) {
 						if(options.callback && _.isFunction(options.callback)) {
 							options.callback(false);
