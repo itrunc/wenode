@@ -1,6 +1,6 @@
 define(function(require, exports, module) {
 	module.exports = Backbone.View.extend({
-		tagName: 'button',
+		tagName: 'a',
 		className: 'waves-effect waves-green btn',
 		initialize: function(options) {
 			var defaults = {
