@@ -29,8 +29,10 @@
 		<p class="row word-break"><span class="col s12"><b>URL(服务器地址): </b><br>{{../url}}</span></p>
 	{{/with}}
 		<p class="right-align">
-			<a class="btn-edit btn-floating waves-effect waves-light green"><i class="mdi-image-edit"></i></a>
-			<a class="btn-remove btn-floating waves-effect waves-light red"><i class="mdi-content-clear"></i></a>
+			<a class="btn waves-effect waves-light" href="/admin#keyword/{{model.objectId}}"><i class="mdi-communication-vpn-key left"></i>关键字</a>
+      <a class="btn waves-effect waves-light" href="/admin#fans/{{model.objectId}}"><i class="mdi-social-people left"></i>粉丝</a>
+			<a class="btn waves-effect waves-light btn-edit"><i class="mdi-image-edit left"></i>编辑</a>
+			<a class="btn waves-effect waves-light btn-remove"><i class="mdi-content-clear left"></i>删除</a>
 		</p>
   </div>
 </div>
