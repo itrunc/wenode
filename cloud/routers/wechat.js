@@ -68,7 +68,7 @@ module.exports = {
                   user = new WechatUser;
                   user.set({
                     openid: msg.FromUserName,
-                    sourceId: msg.ToUserName,
+                    sourceid: msg.ToUserName,
                     status: msg.Event=='subscribe' ? 1 : 0,
                     time: parseInt(msg.CreateTime),
                     account: account
@@ -80,8 +80,8 @@ module.exports = {
                   });
                 } else {
                   console.log('Not Found account', msg);
+                  res.reply('Not Found account');
                 }
-
               },
               error: function(obj, err) {
                 res.reply(err.message);
