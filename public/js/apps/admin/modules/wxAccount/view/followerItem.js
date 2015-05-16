@@ -1,4 +1,5 @@
 define(function(require, exports, module) {
+  var moment = require('moment');
   var dialog = require('MDialog'),
       WechatFormView = require('apps/admin/modules/wxAccount/view/form');
   var View = Backbone.View.extend({
@@ -12,7 +13,8 @@ define(function(require, exports, module) {
     render: function() {
       var model = this.model.toJSON();
       $(this.el).html( this.template({
-        model: model
+        model: model,
+        time: moment.unix(model.time).format('YYYY-MM-DD HH:mm:ss')
       }, {helpers: require('handlebars-helper')}) );
       return this;
     }
