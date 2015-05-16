@@ -2,6 +2,11 @@ var _ = require('underscore'),
 	uds = require('underscore.string');
 var prefix = 'wx';
 
+var ObjectList = {
+  account: 'wxAccountList',
+  follower: 'wxFollowerList'
+};
+
 function shouldLogin(req, res, next) {
   if(req.AV.user) {
     next();
@@ -24,12 +29,27 @@ function filterData(req, res, next) {
     case 'get':
       data.body = {
         index: req.query.index || 0,
-        size: req.query.size || 10
+        size: req.query.size || 10,
+        rel: {}
       };
+      switch(data.objectName) {
+        case ObjectList.follower:
+          var account = req.query.rel;
+          if(account && _.isString(account)) {
+            data.body.rel = {
+              objectName: ObjectList.account,
+              column: 'account',
+              value: account
+            }
+          }
+          break;
+        default:
+          break;
+      }
       break;
     case 'post':
       switch(data.objectName) {
-        case 'wxAccountList':
+        case ObjectList.account:
           columns = ['sourceid','code','name','type','intro','appid','appSecret','token','encodingAESKey','method'];
           data.unique = ['sourceid'];
           data.body = _.pick(data.body, columns);
@@ -46,7 +66,7 @@ function filterData(req, res, next) {
       break;
     case 'put':
       switch(data.objectName) {
-        case 'wxAccountList':
+        case ObjectList.account:
           columns = ['intro','appSecret','encodingAESKey','method'];
           data.body = _.pick(data.body, columns);
           break;
@@ -77,6 +97,12 @@ function fetchModels(req, res) {
   var AVObject = AV.Object.extend(data.objectName);
   var query = new AV.Query(AVObject);
   query.equalTo('owner', req.AV.user);
+  if(!_.isEmpty(data.body.rel)) {
+    var AVRelObject = AV.Object.extend(data.body.rel.objectName),
+        relObject = new AVRelObject;
+    relObject.id = data.body.rel.value;
+    query.equalTo(data.body.rel.column, relObject);
+  }
   query.limit(data.body.size);
   query.skip(data.body.index * data.body.size);
   query.ascending('createdAt');
@@ -93,7 +119,7 @@ function fetchModels(req, res) {
 function createModel(req, res) {
   var data = req.wenode_data;
 
-  var AVObject = AV.Object.extend(data.body.objectName),
+  var AVObject = AV.Object.extend(data.objectName),
     ACL = new AV.ACL(req.AV.user),
     object = new AVObject;
 
