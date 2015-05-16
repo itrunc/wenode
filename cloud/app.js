@@ -32,7 +32,7 @@ app.use(express.query());
 app.use('/interface/wechat', wechat({
   //appid: '',
   //encodingAESKey: '',
-  token: 'ocp.avosapps.com'
+  token: 'wenode_avosapps_com'
 }).text(wechatHandler.text).image(wechatHandler.image).voice(wechatHandler.voice).video(wechatHandler.video).location(wechatHandler.location).link(wechatHandler.link).event(wechatHandler.event).middlewarify());
 
 //-----------------------------
