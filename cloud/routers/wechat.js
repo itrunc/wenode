@@ -71,16 +71,16 @@ module.exports = {
                     sourceid: msg.ToUserName,
                     status: msg.Event=='subscribe' ? 1 : 0,
                     time: parseInt(msg.CreateTime),
-                    account: account
+                    account: account,
+                    owner: account.get('owner')
                   });
                   user.save(null).then(function(user) {
                     defaultReply(msg, res);
-                  }, function(obj, err) {
+                  }, function(err) {
                     res.reply(err.message);
                   });
                 } else {
                   console.log('Not Found account', msg);
-                  res.reply('Not Found account');
                 }
               },
               error: function(obj, err) {
