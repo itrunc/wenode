@@ -60,18 +60,22 @@ function filterData(req, res, next) {
           }
           break;
         default:
-          res.status(400).send('您访问的模型不存在');
+          res.status(400).send('对不起，不支持您请求创建的对象');
           return;
       }
       break;
     case 'put':
       switch(data.objectName) {
-        case ObjectList.ac:
+        case ObjectList.account:
           columns = ['intro','appSecret','encodingAESKey','method'];
           data.body = _.pick(data.body, columns);
           break;
+        case ObjectList.follower:
+          columns = ['name','email','phone'];
+          data.body = _.pick(data.body, columns);
+          break;
         default:
-          res.status(400).send('您访问的模型不存在');
+          res.status(400).send('对不起，不支持您请求更新的对象');
           return;
       }
       break;
