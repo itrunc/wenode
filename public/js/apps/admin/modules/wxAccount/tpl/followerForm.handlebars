@@ -1,0 +1,30 @@
+{{#with model}}
+<div class="input-field">
+  <label class="active">OpenId</label>
+  <input type="text" class="validate" value="{{openid}}" disabled>
+</div>
+<div class="input-field">
+  <label class="active">公众号原始ID</label>
+  <input type="text" class="validate" value="{{sourceid}}" disabled>
+</div>
+<div class="input-field">
+  <label class="active">状态</label>
+  <input type="text" class="validate" value="{{#eq status 0}}取消关注{{else}}已关注{{/eq}}" disabled>
+</div>
+<div class="input-field">
+  <label class="active">时间</label>
+  <input type="text" class="validate" value="{{../time}}" disabled>
+</div>
+<div class="input-field">
+  <label {{#empty name}}{{else}}class="active"{{/empty}}>用户名</label>
+  <input type="text" name="name" class="validate" value="{{name}}">
+</div>
+<div class="input-field">
+  <label {{#empty email}}{{else}}class="active"{{/empty}}>邮箱</label>
+  <input type="email" name="email" class="validate" value="{{email}}">
+</div>
+<div class="input-field">
+  <label {{#empty phone}}{{else}}class="active"{{/empty}}>手机号</label>
+  <input type="text" name="phone" class="validate" value="{{phone}}">
+</div>
+{{/with}}

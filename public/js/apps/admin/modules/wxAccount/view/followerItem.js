@@ -1,7 +1,6 @@
 define(function(require, exports, module) {
   var moment = require('moment');
-  var dialog = require('MDialog'),
-      WechatFormView = require('apps/admin/modules/wxAccount/view/form');
+  var dialog = require('MDialog');
   var View = Backbone.View.extend({
     tagName: 'tr',
     template: require('apps/admin/modules/wxAccount/tpl/followerItem.handlebars'),
@@ -9,7 +8,9 @@ define(function(require, exports, module) {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
     },
-    events: {},
+    events: {
+      'click': 'onClick'
+    },
     render: function() {
       var model = this.model.toJSON();
       $(this.el).html( this.template({
@@ -17,6 +18,32 @@ define(function(require, exports, module) {
         time: moment.unix(model.time).format('YYYY-MM-DD HH:mm:ss')
       }, {helpers: require('handlebars-helper')}) );
       return this;
+    },
+    onClick: function(e) {
+      var formView = require('apps/admin/modules/wxAccount/view/followerForm')({
+        model: this.model
+      });
+      dialog.show({
+        title: '粉丝详细信息',
+        message: formView.render().el,
+        withFixedFooter: false,
+        buttons: [{
+          label: '保存',
+          action: function(modal) {
+            formView.submit({
+              success: function(obj,resp,opt) {
+                modal.close();
+              }
+            });
+          }
+        }, {
+          label: '取消',
+          cssClass: 'btn-flat',
+          action: function(modal) {
+            modal.close();
+          }
+        }]
+      });
     }
   });
 

@@ -21,7 +21,8 @@ define(function(require, exports, module) {
       this.fetch();
     },
     events: {
-      'click #btn-more': 'onLoad'
+      'click #btn-more': 'onLoad',
+      'click .btn-back': 'onBack'
     },
     fetch: function(option) {
       option = option || {};
@@ -61,6 +62,9 @@ define(function(require, exports, module) {
     render: function() {},
     onLoad: function(e) {
       this.fetch();
+    },
+    onBack: function(e) {
+      window.history.back();
     }
   });
 

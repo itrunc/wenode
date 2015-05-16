@@ -1,6 +1,8 @@
 {{#with model}}
 <td>{{openid}}</td>
 <td>{{sourceid}}</td>
-<td>{{#eq status 1}}已关注{{/eq}}{{#eq status 0}}取消关注{{/eq}}</td>
+<td>{{#eq status 0}}取消关注{{else}}已关注{{/eq}}</td>
 <td>{{../time}}</td>
+<td>{{name}}</td>
+<td>{{email}}</td>
 {{/with}}
