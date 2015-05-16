@@ -5,7 +5,8 @@ var sessions = require('client-sessions');
 var avosExpressCookieSession = require('avos-express-cookie-session');
 var _ = require('underscore'),
     userApp = require('cloud/routers/user.js'),
-    adminApp = require('cloud/routers/admin.js');
+    adminApp = require('cloud/routers/admin.js'),
+    wechatHandler = require('cloud/routers/wechat.js');
 // App 全局配置
 app.set('views','cloud/views');   // 设置模板目录
 app.set('view engine', 'ejs');    // 设置 template 引擎
@@ -23,6 +24,18 @@ app.use( sessions({
 	duration: 24 * 60 * 60 * 1000,
 	activeDuration: 1000 * 60 * 5
 }) );
+
+//----------------------------
+
+var wechat = require('wechat');
+app.use(express.query());
+app.use('/interface/wechat', wechat({
+  //appid: '',
+  //encodingAESKey: '',
+  token: 'ocp.avosapps.com'
+}).text(wechatHandler.text).image(wechatHandler.image).voice(wechatHandler.voice).video(wechatHandler.video).location(wechatHandler.location).link(wechatHandler.link).event(wechatHandler.event).middlewarify());
+
+//-----------------------------
 
 app.get('/captcha/start/:howmany', userApp.startCaptcha);
 app.get('/captcha/image/:index', userApp.replyImageCaptcha);
