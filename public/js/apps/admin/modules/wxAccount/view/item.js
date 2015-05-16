@@ -1,6 +1,5 @@
 define(function(require, exports, module) {
-	var dialog = require('MDialog'),
-		WechatFormView = require('apps/admin/modules/wxAccount/view/form');
+	var dialog = require('MDialog');
 	var View = Backbone.View.extend({
 		tagName: 'li',
 		className: '',//col s12 m4
@@ -50,7 +49,7 @@ define(function(require, exports, module) {
 			});
 		},
 		onEdit: function(e) {
-			var formView = new WechatFormView({
+			var formView = require('apps/admin/modules/wxAccount/view/form')({
 				model: this.model
 			});
 			dialog.show({
