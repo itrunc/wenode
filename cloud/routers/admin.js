@@ -21,6 +21,7 @@ function filterData(req, res, next) {
   var data = {
     objectName: prefix + uds.classify(req.params.model),
     objectId: req.params.id,
+    hasOwner: true,
     body: req.body,
     unique: []
   };
@@ -42,6 +43,7 @@ function filterData(req, res, next) {
               value: account
             }
           }
+          data.hasOwner = false;
           break;
         default:
           break;
@@ -96,7 +98,9 @@ function fetchModels(req, res) {
   var data = req.wenode_data;
   var AVObject = AV.Object.extend(data.objectName);
   var query = new AV.Query(AVObject);
-  query.equalTo('owner', req.AV.user);
+  if(data.hasOwner) {
+    query.equalTo('owner', req.AV.user);
+  }
   if(!_.isEmpty(data.body.rel)) {
     var AVRelObject = AV.Object.extend(data.body.rel.objectName),
         relObject = new AVRelObject;
