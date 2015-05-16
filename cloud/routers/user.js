@@ -25,13 +25,13 @@ var replyImageCaptcha = function(req, res) {
 	captcha.streamImage( req.params.index, res, isRetina );
 };
 
-var verifyCaptcha = function(req, res, callback) {
+var verifyCaptcha = function(req, res, next) {
 	var captcha = Captcha( req.client_sess, req.query.namespace ),
 		frontendData = captcha.getFrontendData(),
 		imageAnswer = req.body[frontendData.imageFieldName];
 
 	if( imageAnswer && captcha.validateImage(imageAnswer) ) {
-		if(_.isFunction(callback)) callback(req, res);
+		next();
 	} else {
 		res.status(403).send('验证码不正确');
 	}
@@ -109,16 +109,16 @@ var activate = function(req, res) {
 var post = function(req, res) {
 	switch(req.body.type) {
 		case 'signin':
-			verifyCaptcha(req, res, signIn);
+      signIn(req, res);
 			break;
 		case 'signup':
-			verifyCaptcha(req, res, signUp);
+      signUp(req, res);
 			break;
 		case 'reset':
-			verifyCaptcha(req, res, reset);
+      reset(req, res);
 			break;
 		case 'activate':
-			verifyCaptcha(req, res, activate);
+			activate(req, res);
 			break;
 		default: 
 			res.send('default');
@@ -129,6 +129,7 @@ module.exports = {
 	render: render,
 	startCaptcha: startCaptcha,
 	replyImageCaptcha: replyImageCaptcha,
+  verifyCaptcha: verifyCaptcha,
 	post: post,
 	logOut: logOut
 };

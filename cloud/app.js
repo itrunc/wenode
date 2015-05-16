@@ -4,8 +4,8 @@ var app = express();
 var sessions = require('client-sessions');
 var avosExpressCookieSession = require('avos-express-cookie-session');
 var _ = require('underscore'),
-	userApp = require('cloud/modules/user.js'),
-	adminApp = require('cloud/modules/admin.js');
+    userApp = require('cloud/routers/user.js'),
+    adminApp = require('cloud/routers/admin.js');
 // App 全局配置
 app.set('views','cloud/views');   // 设置模板目录
 app.set('view engine', 'ejs');    // 设置 template 引擎
@@ -28,13 +28,12 @@ app.get('/captcha/start/:howmany', userApp.startCaptcha);
 app.get('/captcha/image/:index', userApp.replyImageCaptcha);
 app.get('/user', userApp.render);
 app.get('/user/logout', userApp.logOut);
-app.post('/user', userApp.post);
+app.post('/user', userApp.verifyCaptcha, userApp.post);
 
-app.get('/admin', adminApp.render);
-app.post('/admin/model/:model', adminApp.createModel);
-app.get('/admin/model/:model', adminApp.fetchModels);
-app.put('/admin/model/:model/:id', adminApp.updateModel);
-app.delete('/admin/model/:model/:id', adminApp.destroyModel);
+app.get('/admin', /*adminApp.shouldLogin, */adminApp.render);
+app.post('/admin/model/:model', adminApp.shouldLogin, adminApp.filterData, adminApp.createModel);
+app.get('/admin/model/:model', adminApp.shouldLogin, adminApp.filterData, adminApp.fetchModels);
+app.put('/admin/model/:model/:id', adminApp.shouldLogin, adminApp.filterData, adminApp.updateModel);
+app.delete('/admin/model/:model/:id', adminApp.shouldLogin, adminApp.filterData, adminApp.destroyModel);
 
-// 最后，必须有这行代码来使 express 响应 HTTP 请求
 app.listen();
