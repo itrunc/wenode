@@ -13,6 +13,15 @@ define(function(require, exports, module) {
 			} else {
 				return options.inverse(this);
 			}
-		}
+		},
+    empty: function(context, options) {
+      context = context || '';
+      var isEmpty = context.length===0 ? true : false; //不严谨
+      if(isEmpty) {
+        return options.fn(this);
+      } else {
+        return options.inverse(this);
+      }
+    }
 	}
 });
