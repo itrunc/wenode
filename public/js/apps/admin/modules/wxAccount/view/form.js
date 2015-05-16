@@ -1,7 +1,5 @@
 define(function(require, exports, module) {
-	var toast = function(message) {
-		Materialize.toast(message, 3000, 'red darken-1');
-	};
+  var dialog = require('MDialog');
 	var View = Backbone.View.extend({
 		tagName: 'form',
 		className: '',
@@ -26,15 +24,15 @@ define(function(require, exports, module) {
 				this.model.save(null, {
 					success: function(obj, resp, opt) {
 						if(options.success && _.isFunction(options.success)) options.success(obj,resp,opt);
-						toast('保存成功');
+            dialog.toast('保存成功');
 					},
 					error: function(obj, resp, opt) {
 						//console.log(obj, resp, opt);
-						toast(resp.responseText);
+            dialog.toast(resp.responseText);
 					}
 				});
 			} else {
-				toast(this.model.validationError);
+        dialog.toast(this.model.validationError);
 			}
 		}
 	});
