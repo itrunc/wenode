@@ -26,7 +26,7 @@ define(function(require, exports, module) {
 		},
 		wxFans: function(account) {
 			if(this.currentApp) this.currentApp.undelegateEvents();
-			this.currentApp = require('apps/admin/modules/wxAccount/view/followerList')({
+			this.currentApp = require('apps/admin/modules/wxFollower/view/list')({
         account: account
       });
 			setTitle('微信公众号粉丝维护');

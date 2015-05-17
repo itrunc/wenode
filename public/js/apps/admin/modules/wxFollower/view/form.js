@@ -3,7 +3,7 @@ define(function(require, exports, module) {
       moment = require('moment');
   var View = Backbone.View.extend({
     tagName: 'form',
-    template: require('apps/admin/modules/wxAccount/tpl/followerForm.handlebars'),
+    template: require('apps/admin/modules/wxFollower/tpl/form.handlebars'),
     initialize: function(options) {},
     events: {},
     render: function() {

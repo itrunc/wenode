@@ -4,7 +4,7 @@ define(function(require, exports, module) {
 
   var View = Backbone.View.extend({
     el: '#main',
-    template: require('apps/admin/modules/wxAccount/tpl/followerList.html'),
+    template: require('apps/admin/modules/wxFollower/tpl/list.html'),
     pageIndex: 0,
     pageSize: 20,
     isEnd: false,
@@ -13,7 +13,7 @@ define(function(require, exports, module) {
 
       this.$el.html( this.template );
 
-      this.list = require('apps/admin/modules/wxAccount/collection/FollowerCollection')().collection;
+      this.list = require('apps/admin/modules/wxFollower/collection/followers')().collection;
       this.listenTo(this.list, 'add', this.addOne);
       this.listenTo(this.list, 'reset', this.addAll);
       this.listenTo(this.list, 'all', this.render);
@@ -51,7 +51,7 @@ define(function(require, exports, module) {
       }
     },
     addOne: function(model) {
-      var view = require('apps/admin/modules/wxAccount/view/followerItem')({
+      var view = require('apps/admin/modules/wxFollower/view/item')({
         model: model
       });
       this.$el.find('#list').append(view.render().el);

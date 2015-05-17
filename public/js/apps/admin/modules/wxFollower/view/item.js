@@ -3,7 +3,7 @@ define(function(require, exports, module) {
   var dialog = require('MDialog');
   var View = Backbone.View.extend({
     tagName: 'tr',
-    template: require('apps/admin/modules/wxAccount/tpl/followerItem.handlebars'),
+    template: require('apps/admin/modules/wxFollower/tpl/item.handlebars'),
     initialize: function(options) {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
@@ -20,7 +20,7 @@ define(function(require, exports, module) {
       return this;
     },
     onClick: function(e) {
-      var formView = require('apps/admin/modules/wxAccount/view/followerForm')({
+      var formView = require('apps/admin/modules/wxFollower/view/form')({
         model: this.model
       });
       dialog.show({
