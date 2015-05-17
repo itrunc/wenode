@@ -1,0 +1,8 @@
+<div class="input-field">
+  <label {{#empty model.content}}{{else}}class="active"{{/empty}}>消息内容</label>
+  <textarea name="content" class="materialize-textarea">{{model.content}}</textarea>
+</div>
+<div class="input-field">
+  <label {{#empty model.keywords}}{{else}}class="active"{{/empty}}>关键词(逗号分割)</label>
+  <textarea name="keywords" class="materialize-textarea">{{model.keywords}}</textarea>
+</div>
