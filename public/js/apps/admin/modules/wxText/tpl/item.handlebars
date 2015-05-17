@@ -1,11 +1,11 @@
-<ul class="collection with-header">
-  <li class="collection-header"><h6>文本消息<a href="#!" class="secondary-content"><i class="mdi-editor-border-color"></i></a></h6></li>
-  <li class="collection-item">{{model.content}}</li>
-  <li class="collection-header"><h6>关键词<a href="#!" class="secondary-content"><i class="mdi-content-add"></i></a></h6></li>
+<li class="collection-header"><h6>文本消息<a href="#!" class="secondary-content btn-edit-content"><i class="mdi-editor-border-color"></i></a></h6></li>
+<li class="collection-item">{{model.content}}</li>
+<li class="collection-header"><h6>关键词<a href="#!" class="secondary-content btn-add-keyword"><i class="mdi-content-add"></i></a></h6></li>
 {{#each model.keywords}}
-  <li class="collection-item">{{this}}<a href="#!" class="secondary-content"><i class="mdi-navigation-close"></i></a></li>
+<li class="collection-item">{{this}}<a href="#!" class="secondary-content btn-remove-keyword"><i class="mdi-navigation-close"></i></a></li>
 {{/each}}
-  <li class="collection-item right-align">
-    <a class="waves-effect btn-flat">保存</a>
-  </li>
-</ul>
+<li class="collection-item right-align">
+  <a class="waves-effect btn-flat btn-save">保存</a>
+  <a class="waves-effect btn-flat btn-remove">删除</a>
+</li>
+

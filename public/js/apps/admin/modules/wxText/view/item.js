@@ -1,16 +1,19 @@
 define(function(require, exports, module) {
   var dialog = require('MDialog');
   var View = Backbone.View.extend({
-    tagName: 'div',
-    className: 'col s12 m3',
+    tagName: 'ul',
+    className: 'collection with-header',
     template: require('apps/admin/modules/wxText/tpl/item.handlebars'),
     initialize: function(options) {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
     },
     events: {
-      //'click .btn-remove': 'onDestroy',
-      //'click .btn-edit': 'onEdit'
+      'click .btn-remove-keyword': 'onRemoveKeyword',
+      'click .btn-add-keyword': 'onAddKeyword',
+      'click .btn-edit-content': 'onEditContent',
+      'click .btn-remove': 'onDestroy',
+      'click .btn-save': 'onSave'
     },
     render: function() {
       var model = this.model.toJSON();
@@ -18,12 +21,37 @@ define(function(require, exports, module) {
         model: model
       }, {helpers: require('handlebars-helper')}) );
       return this;
-    }/*,
+    },
+    onRemoveKeyword: function(e) {
+      this.model.removeKeyword($(e.target).closest('.collection-item').text());
+      return false;
+    },
+    onAddKeyword: function(e) {
+      var that = this;
+      dialog.prompt({
+        callback: function(content) {
+          if(content.length > 0) {
+            that.model.addKeywords(content);
+          }
+        }
+      });
+      return false;
+    },
+    onEditContent: function(e) {
+      var that = this;
+      dialog.prompt({
+        message: this.model.get('content'),
+        callback: function(content) {
+          that.model.set('content', content);
+        }
+      });
+      return false;
+    },
     onDestroy: function(e) {
       var self = this;
       dialog.confirm({
         title: '删除警告',
-        message: '您将删除微信号：'+this.model.get('name')+'?',
+        message: '确定删除文本消息吗？',
         btnOKClass: 'btn-flat',
         btnOKLabel: '是',
         //btnCancelClass: 'blue',
@@ -43,33 +71,24 @@ define(function(require, exports, module) {
         }
       });
     },
-    onEdit: function(e) {
-      var formView = require('apps/admin/modules/wxAccount/view/form')({
-        model: this.model
-      });
-      dialog.show({
-        title: '编辑微信公众号',
-        message: formView.render().el,
-        withFixedFooter: false,
-        dismissible: false,
-        buttons: [{
-          label: '保存',
-          action: function(modal) {
-            formView.submit({
-              success: function(obj,resp,opt) {
-                modal.close();
-              }
-            });
-          }
-        }, {
-          label: '取消',
-          cssClass: 'btn-flat',
-          action: function(modal) {
-            modal.close();
-          }
-        }]
-      });
-    }*/
+    onSave: function(e) {
+      if(this.model.hasChanged()) {
+        if(this.model.isValid()) {
+          this.model.save(null, {
+            success: function(obj, resp, opt) {
+              dialog.toast('保存成功');
+            },
+            error: function(obj, resp, opt) {
+              dialog.toast(resp.responseText);
+            }
+          });
+        } else {
+          dialog.toast(this.model.validationError);
+        }
+      } else {
+        dialog.toast('当前文本消息未有改动');
+      }
+    }
   });
 
   module.exports = function(options) {

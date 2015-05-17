@@ -4,7 +4,8 @@ var prefix = 'wx';
 
 var ObjectList = {
   account: 'wxAccountList',
-  follower: 'wxFollowerList'
+  follower: 'wxFollowerList',
+  text: 'wxTextList'
 };
 
 function shouldLogin(req, res, next) {
@@ -17,6 +18,17 @@ function shouldLogin(req, res, next) {
   }
 }
 
+function toKeyword(keywords) {
+  var kws = keywords || [];
+  if(_.isString(kws)) kws = kws.split(/[,\s]+/);
+  if(kws.length <= 0) {
+    kws = [];
+  } else {
+    kws = _.uniq(_.without(kws, ''));
+  }
+  return kws;
+}
+
 function filterData(req, res, next) {
   var data = {
     objectName: prefix + uds.classify(req.params.model),
@@ -25,23 +37,42 @@ function filterData(req, res, next) {
     unique: []
   };
   var columns = [];
+  var relValue = '';
   switch(req.route.method) {
     case 'get':
       data.body = {
         index: req.query.index || 0,
         size: req.query.size || 10,
-        rel: {}
+        rel: {},
+        columns: []
       };
       switch(data.objectName) {
+        case ObjectList.account:
+          data.body.columns = ['sourceid','code','name','type','intro','appid','appSecret','token','encodingAESKey','method'];
+          break;
+        
         case ObjectList.follower:
-          var account = req.query.rel;
-          if(account && _.isString(account)) {
+          relValue = req.query.rel;
+          if(relValue && _.isString(relValue)) {
             data.body.rel = {
               objectName: ObjectList.account,
               column: 'account',
-              value: account
+              value: relValue
             }
           }
+          data.body.columns = ['sourceid','email','phone','name','time','openid','status'];
+          break;
+
+        case ObjectList.text:
+          relValue = req.query.rel;
+          if(relValue && _.isString(relValue)) {
+            data.body.rel = {
+              objectName: ObjectList.account,
+              column: 'account',
+              value: relValue
+            }
+          }
+          data.body.columns = ['accountid','content','keywords'];
           break;
         default:
           break;
@@ -59,6 +90,28 @@ function filterData(req, res, next) {
             return;
           }
           break;
+
+        case ObjectList.text:
+          columns = ['accountid','content','keywords'];
+          data.body = _.pick(data.body, columns);
+          if(_.isEmpty(data.body.content)) {
+            res.status(400).send('消息内容不能为空');
+            return;
+          }
+          if(_.isEmpty(data.body.accountid)) {
+            res.status(400).send('必须关联公众号');
+            return;
+          }
+          data.body.keywords = toKeyword(data.body.keywords);
+          if(data.body.keywords.length <= 0) {
+            res.status(400).send('关键词格式不对');
+            return;
+          }
+          var Account = AV.Object.extend(ObjectList.account);
+          data.body.account = new Account;
+          data.body.account.id = data.body.accountid;
+          break;
+
         default:
           res.status(400).send('对不起，不支持您请求创建的对象');
           return;
@@ -73,6 +126,19 @@ function filterData(req, res, next) {
         case ObjectList.follower:
           columns = ['name','email','phone'];
           data.body = _.pick(data.body, columns);
+          break;
+        case ObjectList.text:
+          columns = ['content','keywords'];
+          data.body = _.pick(data.body, columns);
+          if(_.isEmpty(data.body.content)) {
+            res.status(400).send('消息内容不能为空');
+            return;
+          }
+          data.body.keywords = toKeyword(data.body.keywords);
+          if(data.body.keywords.length <= 0) {
+            res.status(400).send('关键词格式不对');
+            return;
+          }
           break;
         default:
           res.status(400).send('对不起，不支持您请求更新的对象');
@@ -106,6 +172,9 @@ function fetchModels(req, res) {
         relObject = new AVRelObject;
     relObject.id = data.body.rel.value;
     query.equalTo(data.body.rel.column, relObject);
+  }
+  if(!_.isEmpty(data.body.columns)) {
+    query.select(data.body.columns);
   }
   query.limit(data.body.size);
   query.skip(data.body.index * data.body.size);

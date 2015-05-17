@@ -5,12 +5,14 @@ define(function(require, exports, module) {
     el: '#main',
     template: require('apps/admin/modules/wxText/tpl/list.html'),
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
     isEnd: false,
+    currentColumn: 0,
     initialize: function(options) {
+      this.account = options.account;
       this.$el.html( this.template );
 
-      this.list = require('apps/admin/modules/wxText/collection/TextCollection')().collection;
+      this.list = require('apps/admin/modules/wxText/collection/texts')().collection;
       this.listenTo(this.list, 'add', this.addOne);
       this.listenTo(this.list, 'reset', this.addAll);
       this.listenTo(this.list, 'all', this.render);
@@ -29,13 +31,14 @@ define(function(require, exports, module) {
         this.list.fetch({
           data: {
             index: this.pageIndex,
-            size: this.pageSize
+            size: this.pageSize,
+            rel: this.accountid
           },
           success: function(results, resp, opt) {
             if(results.length < self.pageSize) {
               self.isEnd = true;
               dialog.toast('已经全部加载');
-              self.$el.find('#btn-more').addClass('disabled');
+              self.$el.find('.btn-more').addClass('disabled').hide();
             }
             self.pageIndex++;
             if(option.success && _.isFunction(option.success)) option.success(results, resp, opt);
@@ -51,14 +54,17 @@ define(function(require, exports, module) {
       var view = require('apps/admin/modules/wxText/view/item')({
         model: model
       });
-      this.$el.find('#list').append(view.render().el);
+      this.$el.find('#list > .col').eq(this.currentColumn%4).append(view.render().el);
+      this.currentColumn++;
     },
     addAll: function() {
       this.list.each(this.addOne, this);
     },
     onCreate: function(e) {
       var self = this;
-      var text = new TextModel;
+      var text = new TextModel({
+        accountid: this.account
+      });
       text.collection = this.list;
       var formView = require('apps/admin/modules/wxText/view/form')({
         model: text
