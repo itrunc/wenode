@@ -60,7 +60,10 @@ define(function(require, exports, module) {
 		close: function() {
 			$(this.el).closeModal();
 			if(this.autodestroy) this.remove();
-		}
+		},
+    getBody: function() {
+      return $(this.el).find('.modal-body');
+    }
 	});
 
 	module.exports = {
@@ -74,8 +77,9 @@ define(function(require, exports, module) {
 				title: title,
 				message: message,
 				dismissible: false,
-				height: size.height || '210px',
-				width: size.width || '400px',
+				//height: size.height || '210px',
+				//width: size.width || '400px',
+        withFixedFooter: false,
 				buttons: [{
 					label: label,
 					action: function(modal) {
@@ -89,8 +93,9 @@ define(function(require, exports, module) {
 			var modal = new Modal({
 				title: options.title || 'Confirm',
 				message: options.message || '?',
-				height: options.height || '230px',
-				width: options.width || '420px',
+				//height: options.height || '230px',
+				//width: options.width || '420px',
+        withFixedFooter: false,
 				buttons: [{
 					label: options.btnCancelLabel || 'Cancel',
 					cssClass: options.btnCancelClass || 'btn',
@@ -112,6 +117,31 @@ define(function(require, exports, module) {
 				}]
 			});
 		},
+    prompt: function(options) {
+      options = options || {};
+      var message = options.message || '';
+      var modal = new Modal({
+        title: options.title || '请输入内容',
+        message: '<textarea class="materialize-textarea">'+message+'</textarea>',
+        withFixedFooter: false,
+        buttons: [{
+          label: options.btnCancelLabel || '取消',
+          cssClass: options.btnCancelClass || 'btn-flat',
+          action: function(modal) {
+            modal.close();
+          }
+        }, {
+          label: options.btnOKLabel || '确定',
+          cssClass: options.btnOKClass || 'teal lighten-2',
+          action: function(modal) {
+            if(options.callback && _.isFunction(options.callback)) {
+              options.callback(modal.getBody().find('textarea').val());
+            }
+            modal.close();
+          }
+        }]
+      });
+    },
 		show: function(options) {
 			return (new Modal(options));
 		}
