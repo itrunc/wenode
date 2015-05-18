@@ -19,7 +19,7 @@ define(function(require, exports, module) {
       var model = this.model.toJSON();
       $(this.el).html( this.template({
         model: model,
-        isChanged: this.model.hasChanged()
+        isChanged: this.model.hasChanged('content') || this.model.hasChanged('keywords')
       }, {helpers: require('handlebars-helper')}) );
       return this;
     },
@@ -73,20 +73,23 @@ define(function(require, exports, module) {
       });
     },
     onSave: function(e) {
-      var that = this;
-      if(this.model.hasChanged()) {
+      var that = this,
+          me = $(e.target);
+      me.hide();
+      if(this.model.hasChanged('content') || this.model.hasChanged('keywords')) {
         if(this.model.isValid()) {
           this.model.save(null, {
             success: function(obj, resp, opt) {
               dialog.toast('保存成功');
-              $(that.el).find('.btn-save').hide();
             },
             error: function(obj, resp, opt) {
               dialog.toast(resp.responseText);
+              me.show();
             }
           });
         } else {
           dialog.toast(this.model.validationError);
+          me.show();
         }
       } else {
         dialog.toast('当前文本消息未有改动');

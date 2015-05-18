@@ -1,11 +1,12 @@
 define(function(require, exports, module) {
   var dialog = require('MDialog');
   var TextModel = require('model/Text');
+  var TextCollection = require('apps/admin/modules/wxText/collection/texts');
   var View = Backbone.View.extend({
     el: '#main',
     template: require('apps/admin/modules/wxText/tpl/list.html'),
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 3,
     isEnd: false,
     currentColumn: 0,
     isLoad: true,
@@ -13,7 +14,7 @@ define(function(require, exports, module) {
       this.account = options.account;
       this.$el.html( this.template );
 
-      this.list = require('apps/admin/modules/wxText/collection/texts')().collection;
+      this.list = TextCollection().collection;
       this.listenTo(this.list, 'add', this.addOne);
       this.listenTo(this.list, 'reset', this.addAll);
       this.listenTo(this.list, 'all', this.render);
@@ -29,7 +30,8 @@ define(function(require, exports, module) {
       option = option || {};
       var self = this;
       if(!this.isEnd) {
-        this.list.fetch({
+        var list = TextCollection().collection;
+        list.fetch({
           data: {
             index: this.pageIndex,
             size: this.pageSize,
@@ -42,6 +44,9 @@ define(function(require, exports, module) {
               self.$el.find('.btn-more').addClass('disabled').hide();
             }
             self.pageIndex++;
+            if(results.length > 0) {
+              self.list.add(results.models);
+            }
             if(option.success && _.isFunction(option.success)) option.success(results, resp, opt);
           },
           error: function(obj, resp, opt) {
