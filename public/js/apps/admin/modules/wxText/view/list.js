@@ -6,7 +6,7 @@ define(function(require, exports, module) {
     el: '#main',
     template: require('apps/admin/modules/wxText/tpl/list.html'),
     pageIndex: 0,
-    pageSize: 3,
+    pageSize: 10,
     isEnd: false,
     currentColumn: 0,
     isLoad: true,
@@ -23,7 +23,8 @@ define(function(require, exports, module) {
     },
     events: {
       'click .btn-create': 'onCreate',
-      'click .btn-more': 'onLoad'
+      'click .btn-more': 'onLoad',
+      'click .btn-back': 'onBack'
     },
     render: function() {},
     fetch: function(option) {
@@ -106,6 +107,9 @@ define(function(require, exports, module) {
     },
     onLoad: function(e) {
       this.fetch();
+    },
+    onBack: function(e) {
+      window.history.back();
     }
   });
 
