@@ -8,6 +8,7 @@ define(function(require, exports, module) {
     pageSize: 10,
     isEnd: false,
     currentColumn: 0,
+    isLoad: true,
     initialize: function(options) {
       this.account = options.account;
       this.$el.html( this.template );
@@ -54,7 +55,12 @@ define(function(require, exports, module) {
       var view = require('apps/admin/modules/wxText/view/item')({
         model: model
       });
-      this.$el.find('#list > .col').eq(this.currentColumn%4).append(view.render().el);
+      if(this.isLoad) {
+        this.$el.find('#list > .col').eq(this.currentColumn%4).append(view.render().el);
+      } else {
+        this.$el.find('#list > .col').eq(this.currentColumn%4).prepend(view.render().el);
+      }
+      this.isLoad = true;
       this.currentColumn++;
     },
     addAll: function() {
@@ -78,6 +84,7 @@ define(function(require, exports, module) {
           action: function(modal) {
             formView.submit({
               success: function(obj,resp,opt) {
+                self.isLoad = false;
                 self.list.add(formView.model);
                 modal.close();
               }

@@ -4,8 +4,7 @@
 {{#each model.keywords}}
 <li class="collection-item">{{this}}<a href="#!" class="secondary-content btn-remove-keyword"><i class="mdi-navigation-close"></i></a></li>
 {{/each}}
-<li class="collection-item right-align">
-  <a class="waves-effect btn-flat btn-save">保存</a>
-  <a class="waves-effect btn-flat btn-remove">删除</a>
+<li class="collection-header right-align">
+  <span title="保存" class="teal-text btn-save" style="{{#if isChanged}}cursor:pointer;{{else}}display:none{{/if}}">保存更新</span>
+  <span title="删除" class="grey-text btn-remove" style="cursor:pointer">删除</span>
 </li>
-

@@ -18,7 +18,8 @@ define(function(require, exports, module) {
     render: function() {
       var model = this.model.toJSON();
       $(this.el).html( this.template({
-        model: model
+        model: model,
+        isChanged: this.model.hasChanged()
       }, {helpers: require('handlebars-helper')}) );
       return this;
     },
@@ -72,11 +73,13 @@ define(function(require, exports, module) {
       });
     },
     onSave: function(e) {
+      var that = this;
       if(this.model.hasChanged()) {
         if(this.model.isValid()) {
           this.model.save(null, {
             success: function(obj, resp, opt) {
               dialog.toast('保存成功');
+              $(that.el).find('.btn-save').hide();
             },
             error: function(obj, resp, opt) {
               dialog.toast(resp.responseText);
