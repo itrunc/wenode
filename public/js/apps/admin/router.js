@@ -6,8 +6,7 @@ define(function(require, exports, module) {
 		routes: {
 			'': 'wxAccount',
 			'account': 'wxAccount',
-			'keyword/:account': 'wxKeyword',
-			'fans/:account': 'wxFans',
+			'follower/:account': 'wxFollower',
       'text/:account': 'wxText'
 		},
 		currentApp: null,
@@ -19,12 +18,7 @@ define(function(require, exports, module) {
 			this.currentApp = require('apps/admin/modules/wxAccount/view/list')();
 			setTitle('微信公众号列表');
 		},
-		wxKeyword: function() {
-			if(this.currentApp) this.currentApp.undelegateEvents();
-			this.currentApp = require('apps/admin/modules/wxAccount/view/keyword')();
-			setTitle('微信公众号关键字维护');
-		},
-		wxFans: function(account) {
+		wxFollower: function(account) {
 			if(this.currentApp) this.currentApp.undelegateEvents();
 			this.currentApp = require('apps/admin/modules/wxFollower/view/list')({
         account: account
