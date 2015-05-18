@@ -35,7 +35,7 @@ define(function(require, exports, module) {
           data: {
             index: this.pageIndex,
             size: this.pageSize,
-            rel: this.accountid
+            rel: this.account
           },
           success: function(results, resp, opt) {
             if(results.length < self.pageSize) {
