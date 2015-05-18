@@ -28,7 +28,7 @@ module.exports = {
       if(account) {
         var queryText = new AV.Query(Text);
         queryText.equalTo('account', account);
-        queryText.equalTo('keywords', msg.Content);
+        queryText.containsAll('keywords', [msg.Content]);
         queryText.first().then(function(text){
           if(text) {
             reply = text.get('content');
