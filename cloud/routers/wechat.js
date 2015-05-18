@@ -1,7 +1,8 @@
 var uds = require('underscore.string');
 
 var Account = AV.Object.extend('wxAccountList'),
-    WechatUser = AV.Object.extend('wxFollowerList');
+    WechatUser = AV.Object.extend('wxFollowerList'),
+    Text = AV.Object.extend('wxTextList');
 
 var defaultReply = function(msg, res) {
   res.reply('Hello' + msg.FromUserName);
@@ -20,7 +21,31 @@ var saveMsg = function(msg, type) {
 
 module.exports = {
   text: function (msg, req, res, next) {
-    res.reply('text');
+    var reply = 'Hello world';
+    var queryAccount = new AV.Query(Account);
+    queryAccount.equalTo('sourceid', msg.ToUserName);
+    queryAccount.first().then(function(account){
+      if(account) {
+        var queryText = new AV.Query(Text);
+        queryText.equalTo('account', account);
+        queryText.equalTo('keywords', msg.Content);
+        queryText.first().then(function(text){
+          if(text) {
+            reply = text.get('content');
+          } else {
+            //TODO
+          }
+        }, function(err){
+          reply = err.message;
+        });
+      } else {
+        reply = 'Account Not Found';
+      }
+    }, function(err){
+      reply = err.message;
+    });
+
+    res.reply(reply);
     saveMsg(msg, 'text');
   },
   image: function (msg, req, res, next) {
@@ -83,7 +108,7 @@ module.exports = {
                   console.log('Not Found account', msg);
                 }
               },
-              error: function(obj, err) {
+              error: function(err) {
                 res.reply(err.message);
               }
             });
