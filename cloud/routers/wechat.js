@@ -21,31 +21,29 @@ var saveMsg = function(msg, type) {
 
 module.exports = {
   text: function (msg, req, res, next) {
-    var reply = 'Hello world';
     var queryAccount = new AV.Query(Account);
     queryAccount.equalTo('sourceid', msg.ToUserName);
     queryAccount.first().then(function(account){
       if(account) {
         var queryText = new AV.Query(Text);
         queryText.equalTo('account', account);
-        queryText.containsAll('keywords', [msg.Content]);
+        queryText.equalTo('keywords', msg.Content);
         queryText.first().then(function(text){
           if(text) {
-            reply = text.get('content');
+            res.reply(text.get('content'));
           } else {
             //TODO
+            res.reply('Hello World');
           }
         }, function(err){
-          reply = err.message;
+          res.reply(err.message);
         });
       } else {
-        reply = 'Account Not Found';
+        res.reply('Account Not Found');
       }
     }, function(err){
-      reply = err.message;
+      res.reply(err.message);
     });
-
-    res.reply(reply);
     saveMsg(msg, 'text');
   },
   image: function (msg, req, res, next) {
