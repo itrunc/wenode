@@ -7,6 +7,7 @@ define(function(require, exports, module) {
     },
     idAttribute: 'objectId',
     validate: function(attrs, options) {
+      if(_.isEmpty(attrs.accountid)) return '必须关联公众号';
       if(_.isEmpty(attrs.content)) return '消息内容不能为空';
       if(_.isEmpty(attrs.keywords)) return '关键词不能为空';
     },
