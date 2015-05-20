@@ -5,7 +5,8 @@ var prefix = 'wx';
 var ObjectList = {
   account: 'wxAccountList',
   follower: 'wxFollowerList',
-  text: 'wxTextList'
+  text: 'wxTextList',
+  news: 'wxNewsList'
 };
 
 function shouldLogin(req, res, next) {
@@ -38,6 +39,7 @@ function filterData(req, res, next) {
   };
   var columns = [];
   var relValue = '';
+  var RelObject;
   switch(req.route.method) {
     case 'get':
       data.body = {
@@ -74,6 +76,18 @@ function filterData(req, res, next) {
           }
           data.body.columns = ['accountid','content','keywords'];
           break;
+
+        case ObjectList.news:
+          relValue = req.query.rel;
+          if(relValue && _.isString(relValue)) {
+            data.body.rel = {
+              objectName: ObjectList.account,
+              column: 'account',
+              value: relValue
+            }
+          }
+          data.body.columns = ['accountid','items','keywords'];
+          break;
         default:
           break;
       }
@@ -107,8 +121,29 @@ function filterData(req, res, next) {
             res.status(400).send('关键词格式不对');
             return;
           }
-          var Account = AV.Object.extend(ObjectList.account);
-          data.body.account = new Account;
+          RelObject = AV.Object.extend(ObjectList.account);
+          data.body.account = new RelObject;
+          data.body.account.id = data.body.accountid;
+          break;
+
+        case ObjectList.news:
+          columns = ['accountid','items','keywords'];
+          data.body = _.pick(data.body, columns);
+          if(!_.isArray(data.body.items) || _.isEmpty(data.body.items)) {
+            res.status(400).send('图文消息列表格式不对');
+            return;
+          }
+          if(_.isEmpty(data.body.accountid)) {
+            res.status(400).send('必须关联公众号');
+            return;
+          }
+          data.body.keywords = toKeyword(data.body.keywords);
+          if(data.body.keywords.length <= 0) {
+            res.status(400).send('关键词格式不对');
+            return;
+          }
+          RelObject = AV.Object.extend(ObjectList.account);
+          data.body.account = new RelObject;
           data.body.account.id = data.body.accountid;
           break;
 
@@ -132,6 +167,19 @@ function filterData(req, res, next) {
           data.body = _.pick(data.body, columns);
           if(_.isEmpty(data.body.content)) {
             res.status(400).send('消息内容不能为空');
+            return;
+          }
+          data.body.keywords = toKeyword(data.body.keywords);
+          if(data.body.keywords.length <= 0) {
+            res.status(400).send('关键词格式不对');
+            return;
+          }
+          break;
+        case ObjectList.news:
+          columns = ['items','keywords'];
+          data.body = _.pick(data.body, columns);
+          if(!_.isArray(data.body.items) || _.isEmpty(data.body.items)) {
+            res.status(400).send('图文消息列表格式不对');
             return;
           }
           data.body.keywords = toKeyword(data.body.keywords);
