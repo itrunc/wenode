@@ -1,0 +1,18 @@
+{{#with item}}
+  <div class="input-field">
+    <label {{#empty title}}{{else}}class="active"{{/empty}}>标题</label>
+    <input type="text" name="title" class="validate" value="{{title}}">
+  </div>
+  <div class="input-field">
+    <label {{#empty url}}{{else}}class="active"{{/empty}}>链接</label>
+    <input type="url" name="url" class="validate" value="{{url}}">
+  </div>
+  <div class="input-field">
+    <label {{#empty picurl}}{{else}}class="active"{{/empty}}>图片链接</label>
+    <input type="url" name="picurl" class="validate" value="{{picurl}}">
+  </div>
+  <div class="input-field">
+    <label {{#empty description}}{{else}}class="active"{{/empty}}>描述</label>
+    <textarea name="description" class="materialize-textarea">{{description}}</textarea>
+  </div>
+{{/with}}

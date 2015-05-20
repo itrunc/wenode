@@ -1,0 +1,28 @@
+<div class="card-content">
+  <div class="card-title black-text">图文消息<a href="#!" class="secondary-content btn-add-item"><i class="mdi-content-add"></i></a></div>
+  <ul class="collection">
+    {{#each model.items}}
+      <li class="collection-item avatar" data-index="{{@index}}">
+        {{#empty picurl}}
+          <i class="mdi-av-play-arrow circle red btn-edit-item"></i>
+        {{else}}
+          <span class="btn-edit-item"><img src="{{picurl}}"></span>
+        {{/empty}}
+        <a href="{{url}}">{{title}}</a>
+        <a href="#!" class="secondary-content btn-remove-item"><i class="mdi-navigation-close"></i></a>
+      </li>
+    {{/each}}
+  </ul>
+  <ul class="collection with-header">
+    <li class="collection-header">关键词<a href="#!" class="secondary-content btn-add-keyword"><i class="mdi-content-add"></i></a></li>
+    {{#each model.keywords}}
+      <li class="collection-item">
+        {{this}}
+        <a href="#!" class="secondary-content btn-remove-keyword"><i class="mdi-navigation-close"></i></a></li>
+    {{/each}}
+  </ul>
+  <div class="card-action">
+    <span title="保存" class="teal-text btn-save" style="{{#if isChanged}}cursor:pointer;{{else}}display:none{{/if}}">保存更新</span>
+    <span title="删除" class="grey-text btn-remove" style="cursor:pointer">删除</span>
+  </div>
+</div>
