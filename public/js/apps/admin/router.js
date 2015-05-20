@@ -7,7 +7,8 @@ define(function(require, exports, module) {
 			'': 'wxAccount',
 			'account': 'wxAccount',
 			'follower/:account': 'wxFollower',
-      'text/:account': 'wxText'
+      'text/:account': 'wxText',
+			'news/:account': 'wxNews'
 		},
 		currentApp: null,
 		initialize: function() {
@@ -31,6 +32,13 @@ define(function(require, exports, module) {
         account: account
       });
       setTitle('微信公众号文本消息维护');
-    }
+    },
+		wxNews: function(account) {
+			if(this.currentApp) this.currentApp.undelegateEvents();
+			this.currentApp = require('apps/admin/modules/wxNews/view/list')({
+				account: account
+			});
+			setTitle('微信公众号图文消息维护');
+		}
 	});
 });
