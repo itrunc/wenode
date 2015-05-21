@@ -14,22 +14,23 @@ define(function(require, exports, module) {
     addItem: function(item) {
       item || (item = {});
       if(_.isObject(item) && !_.isEmpty(item.title) && !_.isEmpty(item.url)) {
-        this.set('items', _.union([{
+        this.set('items', _.sortBy(_.union([{
           title: item.title,
           description: item.description || item.title,
           picurl: item.picurl,
-          url: item.url
-        }], this.get('items')));
+          url: item.url,
+          seq: item.seq&&parseInt(item.seq) || 9
+        }], this.get('items')), 'seq'));
       }
     },
     removeItem: function(item) {
       var items = this.get('items');
       if(_.isNumber(item)) {
-        this.set('items', _.without(items, items[item]));
+        this.set('items', _.sortBy(_.without(items, items[item]), 'seq'));
       } else if(_.isString(item)) {
-        this.set('items', _.without(items, _.where(items, {title: item})));
+        this.set('items', _.sortBy(_.without(items, _.where(items, {title: item})), 'seq'));
       } else if(_.isObject(item)) {
-        this.set('items', _.without(items, item));
+        this.set('items', _.sortBy(_.without(items, item), 'seq'));
       }
     },
     toKeywords: function(keywords) {

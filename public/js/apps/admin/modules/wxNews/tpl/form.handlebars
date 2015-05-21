@@ -8,11 +8,15 @@
     <input type="url" name="url" class="validate" value="{{url}}">
   </div>
   <div class="input-field">
-    <label {{#empty picurl}}{{else}}class="active"{{/empty}}>图片链接</label>
+    <label {{#empty picurl}}{{else}}class="active"{{/empty}}>封面</label>
     <input type="url" name="picurl" class="validate" value="{{picurl}}">
   </div>
   <div class="input-field">
     <label {{#empty description}}{{else}}class="active"{{/empty}}>描述</label>
     <textarea name="description" class="materialize-textarea">{{description}}</textarea>
+  </div>
+  <div class="input-field">
+    <label class="active">顺序</label>
+    <input type="number" name="seq" class="validate" value="{{#empty seq}}9{{else}}{{seq}}{{/empty}}">
   </div>
 {{/with}}
