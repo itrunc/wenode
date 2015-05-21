@@ -1,4 +1,5 @@
-var uds = require('underscore.string');
+var _ = require('underscore'),
+    uds = require('underscore.string');
 
 var Account = AV.Object.extend('wxAccountList'),
     WechatUser = AV.Object.extend('wxFollowerList'),
