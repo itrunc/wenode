@@ -19,7 +19,7 @@ define(function(require, exports, module) {
           description: item.description || item.title,
           picurl: item.picurl,
           url: item.url,
-          seq: item.seq&&parseInt(item.seq) || 9
+          seq: item.seq ? parseInt(item.seq) : 9
         }], this.get('items')), 'seq'));
       }
     },
