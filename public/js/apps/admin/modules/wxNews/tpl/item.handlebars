@@ -1,15 +1,41 @@
 <div class="card-content">
   <div class="card-title black-text">图文消息<a href="#!" class="secondary-content btn-add-item"><i class="mdi-content-add"></i></a></div>
-  <ul class="collection">
+  <ul class="wx-news">
     {{#each model.items}}
-      <li class="collection-item avatar" data-index="{{@index}}">
-        {{#empty picurl}}
-          <i class="mdi-av-play-arrow circle red btn-edit-item"></i>
+      {{#eq ../itemLength 1}}
+        <li class="wx-news-item only" data-index="0">
+          <div class="wx-news-content">
+            <p class="title truncate">{{title}}</p>
+            <p class="grey-text">{{../../updatedAt}}</p>
+            {{#empty picurl}}
+            {{else}}
+              <p class="wx-news-cover"><img src="{{picurl}}"></p>
+            {{/empty}}
+            <p class="description grey-text">{{description}}</p>
+            <p class="view"><a href="{{url}}" target="_blank" class="black-text">查看全文</a></p>
+          </div>
+      {{else}}
+        {{#eq @index 0}}
+          <li class="wx-news-item first" data-index="0">
+            <div class="wx-news-content" style="background-image:url('{{picurl}}')">
+              <a href="{{url}}" class="grey darken-2 white-text title">{{title}}</a>
+            </div>
         {{else}}
-          <span class="btn-edit-item"><img src="{{picurl}}"></span>
-        {{/empty}}
-        <a href="{{url}}">{{title}}</a>
-        <a href="#!" class="secondary-content btn-remove-item"><i class="mdi-navigation-close"></i></a>
+          <li class="wx-news-item" data-index="{{@index}}">
+            {{#empty picurl}}
+              <i class="mdi-av-play-arrow wx-news-cover grey lighten-3 grey-text"></i>
+            {{else}}
+              <span class="wx-news-cover"><img src="{{picurl}}"></span>
+            {{/empty}}
+            <div class="valign-wrapper wx-news-content">
+              <a href="{{url}}" class="valign grey-text text-darken-3">{{title}}</a>
+            </div>
+        {{/eq}}
+      {{/eq}}
+        <span class="wx-news-item-badge">
+            <i class="mdi-navigation-close red-text btn-remove-item"></i>
+            <i class="mdi-editor-mode-edit teal-text text-lighten-1 btn-edit-item"></i>
+          </span>
       </li>
     {{/each}}
   </ul>

@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
-  var dialog = require('MDialog');
+  var dialog = require('MDialog'),
+      moment = require('moment');
   var ItemFormView = require('apps/admin/modules/wxNews/view/form');
   var View = Backbone.View.extend({
     tagName: 'div',
@@ -22,6 +23,8 @@ define(function(require, exports, module) {
       var model = this.model.toJSON();
       $(this.el).html( this.template({
         model: model,
+        itemLength: model.items.length,
+        updatedAt: moment(model.updatedAt).format('MM月DD日'),
         isChanged: this.model.hasChanged('items') || this.model.hasChanged('keywords')
       }, {helpers: require('handlebars-helper')}) );
       return this;
@@ -68,7 +71,7 @@ define(function(require, exports, module) {
       return false;
     },
     onEditItem: function(e) {
-      var me = $(e.target).closest('.collection-item');
+      var me = $(e.target).closest('.wx-news-item');
       var formView = ItemFormView({
         model: this.model,
         itemIndex: parseInt(me.data('index'))
@@ -94,7 +97,7 @@ define(function(require, exports, module) {
       return false;
     },
     onRemoveItem: function(e) {
-      var me = $(e.target).closest('.collection-item');
+      var me = $(e.target).closest('.wx-news-item');
       this.model.removeItem(parseInt(me.data('index')));
       return false;
     },
