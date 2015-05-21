@@ -2,7 +2,8 @@ var uds = require('underscore.string');
 
 var Account = AV.Object.extend('wxAccountList'),
     WechatUser = AV.Object.extend('wxFollowerList'),
-    Text = AV.Object.extend('wxTextList');
+    Text = AV.Object.extend('wxTextList'),
+    News = AV.Object.extend('wxNewsList');
 
 var defaultReply = function(msg, res) {
   res.reply('Hello' + msg.FromUserName);
@@ -25,17 +26,43 @@ module.exports = {
     queryAccount.equalTo('sourceid', msg.ToUserName);
     queryAccount.first().then(function(account){
       if(account) {
-        var queryText = new AV.Query(Text);
-        queryText.equalTo('account', account);
-        queryText.containsAll('keywords', [msg.Content]);
-        queryText.first().then(function(text){
-          if(text) {
-            res.reply(text.get('content'));
+        //查询图文
+        var queryNews = new AV.Query(News);
+        queryNews.equalTo('account', account);
+        queryNews.containsAll('keywords', [msg.Content]);
+        queryNews.first().then(function(news) {
+          if(news) {
+            var items = _.sortBy(news.get('items'),'seq');
+            var reply = [];
+            if(items.length > 0) {
+              for(var i=0; i<items.length; i++) {
+                var item = items[i];
+                reply.push({
+                  title: item.title,
+                  description: item.description || item.title,
+                  picurl: item.picurl,
+                  url: item.url
+                });
+              }
+            }
+            res.reply(reply);
           } else {
-            //TODO
-            res.reply('Hello World');
+            //再查询文本消息
+            var queryText = new AV.Query(Text);
+            queryText.equalTo('account', account);
+            queryText.containsAll('keywords', [msg.Content]);
+            queryText.first().then(function(text){
+              if(text) {
+                res.reply(text.get('content'));
+              } else {
+                //TODO
+                res.reply('Hello World');
+              }
+            }, function(err){
+              res.reply(err.message);
+            });
           }
-        }, function(err){
+        }, function(err) {
           res.reply(err.message);
         });
       } else {
