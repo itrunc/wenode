@@ -1,0 +1,22 @@
+<div class="collapsible-header">
+  <i class="mdi-notification-event-note"></i>
+  {{model.title}}
+  <span class="badge">{{updatedAt}}</span>
+</div>
+<div class="collapsible-body">
+  <article class="collapsible-content">
+    <section>{{{model.html}}}</section>
+    <section>
+      {{#each model.tags}}
+        <span class="wn-tag cyan darken-1 white-text z-depth-1">
+          <i class="mdi-action-loyalty"></i>
+          {{this}}
+        </span>
+      {{/each}}
+    </section>
+    <p class="right-align">
+      <a class="btn waves-effect waves-light btn-edit"><i class="mdi-image-edit left"></i>编辑</a>
+      <a class="btn waves-effect waves-light btn-remove"><i class="mdi-content-clear left"></i>删除</a>
+    </p>
+  </article>
+</div>

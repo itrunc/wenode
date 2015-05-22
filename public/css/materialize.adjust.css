@@ -26,6 +26,10 @@ input[type=search] {
   margin: 0 0 15px;
 }
 
+.collapsible-header {
+  position: relative;
+}
+
 .editormd-menu .divider {
   overflow: inherit;
 }
@@ -116,4 +120,13 @@ input[type=search] {
   text-align: center;
   display: block;
   cursor: pointer;
+}
+
+/*Tag*/
+.wn-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  margin: 2px;
+  font-size: 12px;
+  font-weight: normal;
 }

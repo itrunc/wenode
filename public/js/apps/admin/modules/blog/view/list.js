@@ -16,7 +16,7 @@ define(function(require, exports, module) {
       this.listenTo(this.list, 'reset', this.addAll);
       this.listenTo(this.list, 'all', this.render);
 
-      //this.fetch();
+      this.fetch();
     },
     events: {
       'click .btn-create': 'onCreate',
@@ -58,6 +58,7 @@ define(function(require, exports, module) {
         model: model
       });
       this.$el.find('#list').append(view.render().el);
+      this.$el.find('#list').collapsible();
     },
     addAll: function() {
       this.list.each(this.addOne, this);
