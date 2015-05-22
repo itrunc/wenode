@@ -242,7 +242,7 @@ function fetchModels(req, res) {
   }
   query.limit(data.body.size);
   query.skip(data.body.index * data.body.size);
-  query.ascending('createdAt');
+  query.descending('createdAt');
   query.find({
     success: function(results) {
       res.status(200).json(results);
