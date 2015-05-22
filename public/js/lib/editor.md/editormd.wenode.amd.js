@@ -436,8 +436,14 @@
 
       id                   = (typeof id === "object") ? settings.id : id;
 
-      //var editor           = this.editor       = $("#" + id);
-      var editor           = this.editor       = $(id);
+      var editor;
+      if(settings.$el) {
+        editor           = this.editor       = $(settings.$el);
+        id = editor.attr('id');
+      } else {
+        editor           = this.editor       = $("#" + id);
+      }
+
 
       this.id              = id;
       this.lang            = settings.lang;
@@ -2253,7 +2259,9 @@
         return false;
       }
 
-      return this.htmlTextarea.html();
+      //这里有一个bug，按照这种写法根本获取不到值
+      //return this.htmlTextarea.html();
+      return this.htmlTextarea.val();
     },
 
     /**
