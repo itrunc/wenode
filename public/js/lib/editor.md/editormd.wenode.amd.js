@@ -436,7 +436,8 @@
 
       id                   = (typeof id === "object") ? settings.id : id;
 
-      var editor           = this.editor       = $("#" + id);
+      //var editor           = this.editor       = $("#" + id);
+      var editor           = this.editor       = $(id);
 
       this.id              = id;
       this.lang            = settings.lang;
