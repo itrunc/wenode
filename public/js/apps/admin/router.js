@@ -8,7 +8,8 @@ define(function(require, exports, module) {
 			'account': 'wxAccount',
 			'follower/:account': 'wxFollower',
       'text/:account': 'wxText',
-			'news/:account': 'wxNews'
+			'news/:account': 'wxNews',
+			'blog': 'Blog'
 		},
 		currentApp: null,
 		initialize: function() {
@@ -39,6 +40,11 @@ define(function(require, exports, module) {
 				account: account
 			});
 			setTitle('微信公众号图文消息维护');
+		},
+		Blog: function() {
+			if(this.currentApp) this.currentApp.undelegateEvents();
+			this.currentApp = require('apps/admin/modules/blog/view/list')();
+			setTitle('博客列表');
 		}
 	});
 });
