@@ -6,7 +6,8 @@ var ObjectList = {
   account: 'wxAccountList',
   follower: 'wxFollowerList',
   text: 'wxTextList',
-  news: 'wxNewsList'
+  news: 'wxNewsList',
+  blog: 'wxBlogList'
 };
 
 function shouldLogin(req, res, next) {
@@ -88,6 +89,10 @@ function filterData(req, res, next) {
           }
           data.body.columns = ['accountid','items','keywords'];
           break;
+
+        case ObjectList.blog:
+          data.body.columns = ['title','markdown','html','tags'];
+          break;
         default:
           break;
       }
@@ -147,6 +152,12 @@ function filterData(req, res, next) {
           data.body.account.id = data.body.accountid;
           break;
 
+        case ObjectList.blog:
+          columns = ['title','markdown','html','tags'];
+          data.body = _.pick(data.body, columns);
+          data.body.tags = toKeyword(data.body.tags);
+          break;
+
         default:
           res.status(400).send('对不起，不支持您请求创建的对象');
           return;
@@ -187,6 +198,11 @@ function filterData(req, res, next) {
             res.status(400).send('关键词格式不对');
             return;
           }
+          break;
+        case ObjectList.blog:
+          columns = ['title','markdown','html','tags'];
+          data.body = _.pick(data.body, columns);
+          data.body.tags = toKeyword(data.body.tags);
           break;
         default:
           res.status(400).send('对不起，不支持您请求更新的对象');
