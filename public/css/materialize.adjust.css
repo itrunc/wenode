@@ -1,4 +1,34 @@
 .word-break{word-wrap:break-word;word-break:break-all}
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=url],
+input[type=time],
+input[type=date],
+input[type=datetime-local],
+input[type=tel],
+input[type=number],
+input[type=search] {
+  height: auto;
+  margin: auto;
+}
+.input-field input[type=text],
+.input-field input[type=password],
+.input-field input[type=email],
+.input-field input[type=url],
+.input-field input[type=time],
+.input-field input[type=date],
+.input-field input[type=datetime-local],
+.input-field input[type=tel],
+.input-field input[type=number],
+.input-field input[type=search] {
+  height: 3rem;
+  margin: 0 0 15px;
+}
+
+.editormd-menu .divider {
+  overflow: inherit;
+}
 
 /*wx-news*/
 .wx-news {
