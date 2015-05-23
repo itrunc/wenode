@@ -4,6 +4,7 @@ define(function(require, exports, module) {
       title: '',
       markdown: '',
       html: '',
+      preview: '',
       tags: []
     },
     idAttribute: 'objectId',

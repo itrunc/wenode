@@ -91,7 +91,7 @@ function filterData(req, res, next) {
           break;
 
         case ObjectList.blog:
-          data.body.columns = ['title','markdown','html','tags'];
+          data.body.columns = ['title','markdown','html','preview','tags'];
           break;
         default:
           break;
@@ -153,7 +153,7 @@ function filterData(req, res, next) {
           break;
 
         case ObjectList.blog:
-          columns = ['title','markdown','html','tags'];
+          columns = ['title','markdown','html','preview','tags'];
           data.body = _.pick(data.body, columns);
           data.body.tags = toKeyword(data.body.tags);
           break;
@@ -200,7 +200,7 @@ function filterData(req, res, next) {
           }
           break;
         case ObjectList.blog:
-          columns = ['title','markdown','html','tags'];
+          columns = ['title','markdown','html','preview','tags'];
           data.body = _.pick(data.body, columns);
           data.body.tags = toKeyword(data.body.tags);
           break;
