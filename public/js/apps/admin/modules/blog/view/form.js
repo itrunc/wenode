@@ -25,7 +25,8 @@ define(function(require, exports, module) {
         title: data.title,
         tags: this.model.toTags(data.tags),
         markdown: this.editor.getContent(),
-        html: this.editor.getHTML()
+        html: this.editor.getHTML(),
+        preview: this.editor.getPreview()
       });
       if(this.model.isValid()) {
         this.model.save(null, {

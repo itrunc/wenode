@@ -5,7 +5,10 @@
 </div>
 <div class="collapsible-body">
   <article class="collapsible-content">
-    <section>{{{model.html}}}</section>
+    <div class="editormd-html-preview">
+      <section>{{{model.preview}}}</section>
+    </div>
+
     <section>
       {{#each model.tags}}
         <span class="wn-tag cyan darken-1 white-text z-depth-1">
