@@ -3938,6 +3938,18 @@
     into       = into     || "head";
     callback   = callback || function() {};
 
+    var isExisted = false;
+    for(var i=0; i<editormd.loadFiles.css.length; i++) {
+      if(fileName === editormd.loadFiles.css[i]) {
+        isExisted = true;
+        break;
+      }
+    }
+    if(isExisted) {
+      callback();
+      return;
+    }
+
     var css    = document.createElement("link");
     css.type   = "text/css";
     css.rel    = "stylesheet";
