@@ -130,3 +130,23 @@ input[type=search] {
   font-size: 12px;
   font-weight: normal;
 }
+
+/*Popup*/
+.wn-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  overflow: auto;
+  z-index: 100;
+}
+.wn-popup-container {
+  padding: 24px;
+  position: relative;
+}
+.wn-popup-header {}
+.wn-popup-body {}
+.wn-popup-content {}
+.wn-popup-footer {}
