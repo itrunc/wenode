@@ -70,29 +70,23 @@ define(function(require, exports, module) {
       var formView = require('apps/admin/modules/blog/view/form')({
         model: blog
       });
-      dialog.show({
-        title: '添加博客',
-        message: formView.render().el,
-        withFixedFooter: false,
-        width: '100%',
+      require('util/BBPopup')({
+        content: formView.render().el,
         buttons: [{
           label: '保存',
-          action: function(modal) {
+          action: function(e, popup) {
             formView.submit({
-              success: function(obj,resp,opt) {
+              success: function(obj, resp, opt) {
                 self.list.add(formView.model);
-                modal.close();
+                popup.close();
               }
             });
           }
         }, {
           label: '取消',
-          cssClass: 'btn-flat',
-          action: function(modal) {
-            modal.close();
-          }
+          cssClass: 'btn-flat'
         }]
-      });
+      }).open();
     },
     onLoad: function(e) {
       this.fetch();
