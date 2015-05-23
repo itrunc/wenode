@@ -22,6 +22,9 @@ define(function(require, exports, module) {
     getHTML: function() {
       return this.editor.getHTML();
     },
+    getPreview: function() {
+      return this.editor.getPreviewedHTML();
+    },
     getContent: function() {
       return this.editor.getValue();
     },
