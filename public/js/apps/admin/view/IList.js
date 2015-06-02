@@ -20,6 +20,7 @@ define(function(require, exports, module) {
     columnCnt: 1,
     isLoad: true,
     initialize: function(options) {
+      this.rel = options.rel;
       this.$el.html( this.template );
       if(this.columnCnt > 1) {
         var col = '<div class="col s12 m'+parseInt(12/this.columnCnt)+'"></div>',
@@ -46,11 +47,13 @@ define(function(require, exports, module) {
       var self = this;
       if(!this.isEnd) {
         var list = this.Collection().collection;
+        var data = {
+          index: this.pageIndex,
+          size: this.pageSize
+        };
+        if(this.rel) data.rel = this.rel;
         list.fetch({
-          data: {
-            index: this.pageIndex,
-            size: this.pageSize
-          },
+          data: data,
           success: function(results, resp, opt) {
             if(results.length < self.pageSize) {
               self.isEnd = true;
