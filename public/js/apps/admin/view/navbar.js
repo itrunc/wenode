@@ -16,7 +16,7 @@ define(function(require, exports, module) {
 					this.menu.account
 				],
 				func: {
-					label: '功能',
+					label: '功能列表',
 					items: [
 						this.menu.blog,
 						this.menu.qgroup
