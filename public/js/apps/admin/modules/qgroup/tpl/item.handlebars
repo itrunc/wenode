@@ -1,0 +1,14 @@
+<div class="card-content white-text">
+  <div class="card-title">{{model.title}}</div>
+  <section>
+    {{#each model.tags}}
+      <span class="wn-tag cyan darken-1 white-text z-depth-1">
+        <i class="mdi-action-loyalty"></i>{{this}}
+      </span>
+    {{/each}}
+  </section>
+</div>
+<div class="card-action">
+  <a class="btn waves-effect waves-light btn-edit"><i class="mdi-image-edit left"></i>编辑</a>
+  <a class="btn waves-effect waves-light btn-remove"><i class="mdi-content-clear left"></i>删除</a>
+</div>
