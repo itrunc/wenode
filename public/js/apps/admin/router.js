@@ -38,7 +38,7 @@ define(function(require, exports, module) {
 		wxNews: function(account) {
 			if(this.currentApp) this.currentApp.undelegateEvents();
 			this.currentApp = require('apps/admin/modules/wxNews/view/list')({
-				account: account
+				rel: account
 			});
 			setTitle('微信公众号图文消息维护');
 		},
