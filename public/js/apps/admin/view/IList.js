@@ -19,6 +19,8 @@ define(function(require, exports, module) {
     currentColumn: 0,
     columnCnt: 1,
     isLoad: true,
+    rel: null,
+    relAttrName: '',
     initialize: function(options) {
       this.rel = options.rel;
       this.$el.html( this.template );
@@ -47,13 +49,12 @@ define(function(require, exports, module) {
       var self = this;
       if(!this.isEnd) {
         var list = this.Collection().collection;
-        var data = {
-          index: this.pageIndex,
-          size: this.pageSize
-        };
-        if(this.rel) data.rel = this.rel;
         list.fetch({
-          data: data,
+          data: {
+            index: this.pageIndex,
+            size: this.pageSize,
+            rel: this.rel
+          },
           success: function(results, resp, opt) {
             if(results.length < self.pageSize) {
               self.isEnd = true;
@@ -93,7 +94,9 @@ define(function(require, exports, module) {
     },
     onCreate: function(e) {
       var self = this;
-      var model = new this.Model;
+      var attrs = {};
+      if(this.rel && this.relAttrName) attrs[this.relAttrName] = this.rel;
+      var model = new this.Model(attrs);
       model.collection = this.list;
       var formView = this.FormView({
         model: model
