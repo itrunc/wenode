@@ -9,7 +9,8 @@ define(function(require, exports, module) {
 			'follower/:account': 'wxFollower',
       'text/:account': 'wxText',
 			'news/:account': 'wxNews',
-			'blog': 'Blog'
+			'blog': 'Blog',
+			'qgroup': 'QGroup'
 		},
 		currentApp: null,
 		initialize: function() {
@@ -45,6 +46,11 @@ define(function(require, exports, module) {
 			if(this.currentApp) this.currentApp.undelegateEvents();
 			this.currentApp = require('apps/admin/modules/blog/view/list')();
 			setTitle('博客列表');
+		},
+		QGroup: function() {
+			if(this.currentApp) this.currentApp.undelegateEvents();
+			this.currentApp = require('apps/admin/modules/qgroup/view/list')();
+			setTitle('题库列表');
 		}
 	});
 });
