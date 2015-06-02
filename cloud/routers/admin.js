@@ -7,7 +7,8 @@ var ObjectList = {
   follower: 'wxFollowerList',
   text: 'wxTextList',
   news: 'wxNewsList',
-  blog: 'wxBlogList'
+  blog: 'wxBlogList',
+  qgroup: 'wxQuestionGroupList'
 };
 
 function shouldLogin(req, res, next) {
@@ -93,6 +94,10 @@ function filterData(req, res, next) {
         case ObjectList.blog:
           data.body.columns = ['title','markdown','html','preview','tags'];
           break;
+
+        case ObjectList.qgroup:
+          data.body.columns = ['title','detail','tags'];
+          break;
         default:
           break;
       }
@@ -158,6 +163,11 @@ function filterData(req, res, next) {
           data.body.tags = toKeyword(data.body.tags);
           break;
 
+        case ObjectList.qgroup:
+          columns = ['title','detail','tags'];
+          data.body = _.pick(data.body, columns);
+          data.body.tags = toKeyword(data.body.tags);
+          break;
         default:
           res.status(400).send('对不起，不支持您请求创建的对象');
           return;
@@ -201,6 +211,11 @@ function filterData(req, res, next) {
           break;
         case ObjectList.blog:
           columns = ['title','markdown','html','preview','tags'];
+          data.body = _.pick(data.body, columns);
+          data.body.tags = toKeyword(data.body.tags);
+          break;
+        case ObjectList.qgroup:
+          columns = ['title','detail','tags'];
           data.body = _.pick(data.body, columns);
           data.body.tags = toKeyword(data.body.tags);
           break;
