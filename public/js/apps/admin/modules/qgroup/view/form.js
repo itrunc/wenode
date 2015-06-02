@@ -19,6 +19,7 @@ define(function(require, exports, module) {
       var data = $(this.el).serializeJSON();
       this.model.set({
         title: data.title,
+        detail: data.detail,
         tags: this.model.toTags(data.tags)
       });
       if(this.model.isValid()) {

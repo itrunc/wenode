@@ -4,6 +4,10 @@
     <input type="text" name="title" class="validate" value="{{title}}">
   </div>
   <div class="input-field">
+    <label {{#empty detail}}{{else}}class="active"{{/empty}}>详细信息</label>
+    <textarea name="detail" class="materialize-textarea">{{detail}}</textarea>
+  </div>
+  <div class="input-field">
     <label {{#empty ../tags}}{{else}}class="active"{{/empty}}>标签(逗号分割)</label>
     <input type="text" name="tags" class="validate" value="{{../tags}}">
   </div>

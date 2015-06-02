@@ -3,7 +3,7 @@ define(function(require, exports, module) {
   var View = Backbone.View.extend({
     tagName: 'div',
     className: 'card',
-    template: require('apps/admin/modules/blog/tpl/item.handlebars'),
+    template: require('apps/admin/modules/qgroup/tpl/item.handlebars'),
     initialize: function(options) {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
@@ -44,6 +44,7 @@ define(function(require, exports, module) {
           }
         }]
       });
+      return false;
     },
     onRemove: function(e) {
       var self = this;
@@ -67,6 +68,7 @@ define(function(require, exports, module) {
           }
         }
       });
+      return false;
     }
   });
 
