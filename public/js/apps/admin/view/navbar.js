@@ -7,6 +7,7 @@ define(function(require, exports, module) {
 				brand: this.getAnchor('/', 'WeNode'),
 				account: this.getAnchor('/admin#account', '公众号管理'),
 				blog: this.getAnchor('/admin#blog', '文章管理'),
+				qgroup: this.getAnchor('/admin#qgroup', '题库管理'),
 				logout: this.getAnchor('/user/logout', 'Logout')
 			};
 			this.$el.html( this.template({
@@ -17,12 +18,14 @@ define(function(require, exports, module) {
 				func: {
 					label: '功能',
 					items: [
-						this.menu.blog
+						this.menu.blog,
+						this.menu.qgroup
 					]
 				},
 				side: [
 					this.menu.account,
-					this.menu.blog
+					this.menu.blog,
+					this.menu.qgroup
 				],
 				user: {
 					label: 'User',
