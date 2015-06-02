@@ -31,7 +31,7 @@ define(function(require, exports, module) {
     wxText: function(account) {
       if(this.currentApp) this.currentApp.undelegateEvents();
       this.currentApp = require('apps/admin/modules/wxText/view/list')({
-        account: account
+        rel: account
       });
       setTitle('微信公众号文本消息维护');
     },
