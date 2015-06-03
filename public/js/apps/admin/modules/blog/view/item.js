@@ -8,8 +8,6 @@ define(function(require, exports, module) {
     initialize: function(options) {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
-
-      this.showdownConverter = new require('showdown').Converter({extensions: ['table']});
     },
     events: {
       'click .btn-edit': 'onEdit',
@@ -19,7 +17,6 @@ define(function(require, exports, module) {
       var model = this.model.toJSON();
       $(this.el).html( this.template({
         model: model,
-        content: this.showdownConverter.makeHtml(model.content),
         updatedAt: moment(model.updatedAt).fromNow()
       }, {helpers: require('handlebars-helper')}) );
       $(this.el).closest('#list').collapsible();

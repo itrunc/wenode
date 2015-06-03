@@ -5,7 +5,7 @@
 </div>
 <div class="collapsible-body">
   <article class="collapsible-content">
-    <section class="wx-markdown-preview">{{{content}}}</section>
+    <section class="wx-markdown-preview">{{#showdown model.content}}{{/showdown}}</section>
 
     <section>
       {{#each model.tags}}
