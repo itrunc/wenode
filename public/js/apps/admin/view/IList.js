@@ -101,24 +101,34 @@ define(function(require, exports, module) {
       var formView = this.FormView({
         model: model
       });
-      require('util/BBPopup')({
-        content: formView.render().el,
-        buttons: [{
-          label: '保存',
-          action: function(e, popup) {
-            formView.submit({
-              success: function(obj, resp, opt) {
-                self.isLoad = false;
-                self.list.add(formView.model);
-                popup.close();
-              }
-            });
+      if(_.isFunction(formView.show)) {
+        formView.show({
+          success: function() {
+            console.log(formView);
+            self.isLoad = false;
+            self.list.add(formView.model);
           }
-        }, {
-          label: '取消',
-          cssClass: 'btn-flat'
-        }]
-      }).open();
+        });
+      } else {
+        require('util/BBPopup')({
+          content: formView.render().el,
+          buttons: [{
+            label: '保存',
+            action: function(e, popup) {
+              formView.submit({
+                success: function() {
+                  self.isLoad = false;
+                  self.list.add(formView.model);
+                  popup.close();
+                }
+              });
+            }
+          }, {
+            label: '取消',
+            cssClass: 'btn-flat'
+          }]
+        }).open();
+      }
     },
     onLoad: function(e) {
       this.fetch();
