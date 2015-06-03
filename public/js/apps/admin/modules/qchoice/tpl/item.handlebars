@@ -4,7 +4,7 @@
     <a href="#!" title="编辑题纲" class="btn-edit"><i class="mdi-content-create"></i></a>
     <a href="#!" title="删除试题" class="btn-remove"><i class="mdi-content-clear"></i></a>
   </div>
-  <div class="editormd-html-preview">{{{model.preview}}}</div>
+  <div class="wx-markdown-preview">{{#showdown model.topic}}{{/showdown}}</div>
 </li>
 {{#each model.items}}
   <li class="collection-item {{#gt isAnswer 0}}grey lighten-5{{/gt}}" data-index="{{@index}}">
@@ -12,7 +12,7 @@
       <a href="#!" title="编辑选项" class="btn-edit-item"><i class="mdi-content-create"></i></a>
       <a href="#!" title="删除选项" class="btn-remove-item"><i class="mdi-content-clear"></i></a>
     </div>
-    <div class="editormd-html-preview">{{{preview}}}</div>
+    <div class="wx-markdown-preview">{{#showdown topic}}{{/showdown}}</div>
   </li>
 {{/each}}
 <li class="collection-item right-align {{#if isChanged}}{{else}}hide{{/if}}">

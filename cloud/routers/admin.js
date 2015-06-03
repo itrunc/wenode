@@ -182,15 +182,15 @@ var ModelList = [{
     id: 'groupid'
   },
   get: {
-    columns: ['groupid','markdown','html','preview','items']
+    columns: ['groupid','topic','items']
   },
   post: {
-    columns: ['groupid','markdown','html','preview','items'],
+    columns: ['groupid','topic','items'],
     check: [{
       key: 'groupid',
       message: '必须关联题库'
     }, {
-      key: 'markdown',
+      key: 'topic',
       message: '题纲内容不能为空'
     }, {
       key: 'items',
@@ -198,9 +198,9 @@ var ModelList = [{
     }]
   },
   put: {
-    columns: ['markdown','html','preview','items'],
+    columns: ['topic','items'],
     check: [{
-      key: 'markdown',
+      key: 'topic',
       message: '题纲内容不能为空'
     }, {
       key: 'items',

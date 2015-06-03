@@ -1,59 +1,46 @@
 define(function(require, exports, module) {
   module.exports = Backbone.Model.extend({
     defaults: {
-      markdown: '',
-      html: '',
-      preview: '',
+      topic: '',
       groupid: '',
       items: []
     },
     idAttribute: 'objectId',
     validate: function(attrs, options) {
       if(_.isEmpty(attrs.groupid)) return '未关联题库';
-      if(_.isEmpty(attrs.markdown)) return '必须输入题纲内容';
-      if(_.isEmpty(attrs.html)) return '无法获取题纲内容';
+      if(_.isEmpty(attrs.topic)) return '必须输入题纲内容';
       if(attrs.items.length < 2) return '必须至少包含2个选项';
       var answerItems = _.where(attrs.items, {isAnswer: 1});
       if(answerItems.length === 0) return '选项中必须包含答案';
     },
     setTopic: function(topic) {
-      if(_.isString(topic)) {
-        topic = {
-          markdown: topic
-        };
+      var content;
+      if(_.isObject(topic)) {
+        content = topic.topic;
+      } else {
+        content = topic.toString();
       }
-      if(_.isEmpty(topic) || _.isEmpty(topic.markdown)) return;
-      this.set({
-        markdown: topic.markdown,
-        html: (topic.html ? topic.html : topic.markdown),
-        preview: (topic.preview ? topic.preview : topic.markdown)
-      });
+      this.set('topic', content);
     },
     getTopic: function() {
       return {
-        markdown: this.get('markdown'),
-        html: this.get('html'),
-        preview: this.get('html')
+        topic: this.get('topic')
       };
     },
     getItem: function(index) {
       var item = this.get('items')[index];
       if(_.isEmpty(item)) {
         item = {
-          markdown: '',
-          html: '',
-          preview: '',
+          topic: '',
           isAnswer: 0
         };
       }
       return item;
     },
     addItem: function(item) {
-      if(_.isObject(item) && !_.isEmpty(item.markdown)) {
+      if(_.isObject(item) && !_.isEmpty(item.topic)) {
         this.set('items', _.union([{
-          markdown: item.markdown,
-          html: item.html ? item.html : item.markdown,
-          preview: item.preview ? item.preview : item.markdown,
+          topic: item.topic,
           isAnswer: item.isAnswer ? 1 : 0
         }], this.get('items')));
       }
@@ -64,7 +51,7 @@ define(function(require, exports, module) {
       if(_.isNumber(item)) {
         _item = items[item];
       } else if(_.isString(item)) {
-        _item = _.where(items, {markdown: item});
+        _item = _.where(items, {topic: item});
       } else if(_.isObject(item)) {
        _item = item;
       }

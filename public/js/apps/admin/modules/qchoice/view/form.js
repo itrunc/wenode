@@ -21,7 +21,7 @@ define(function(require, exports, module) {
       }
       $(this.el).html( this.template(data, {helpers: require('handlebars-helper')}) );
       this.editor = require('BBEditorMD')({
-        value: content.markdown
+        value: content.topic
       });
       $(this.el).find('.input-editor').html(this.editor.el);
       return this;
@@ -46,24 +46,17 @@ define(function(require, exports, module) {
     submit: function(options) {
       options = options || {};
       var content = {
-        markdown: this.editor.getContent(),
-        html: this.editor.getHTML(),
-        preview: this.editor.getPreview()
+        topic: this.editor.getContent()
       };
       if(this.idx >= 0) {
         var data = $(this.el).serializeJSON();
         content.isAnswer = (data.isAnswer ? 1 : 0);
-        var oldItem = this.model.removeItem(this.idx);
-        if(_.isEmpty(content.html) && !_.isEmpty(content.markdown) && oldItem) {
-          oldItem.isAnswer = content.isAnswer;
-          this.model.addItem(oldItem);
-        } else {
-          this.model.addItem(content);
-        }
+        this.model.removeItem(this.idx);
+        this.model.addItem(content);
       } else {
-        if(_.isEmpty(content.html) && !_.isEmpty(content.markdown)) return;
         this.model.setTopic(content);
       }
+      console.log(this.model.toJSON());
       if(options.success && _.isFunction(options.success)) options.success();
     }
   });

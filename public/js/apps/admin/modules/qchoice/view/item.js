@@ -21,7 +21,7 @@ define(function(require, exports, module) {
       var model = this.model.toJSON();
       $(this.el).html( this.template({
         model: model,
-        isChanged: this.model.hasChanged('markdown') || this.model.hasChanged('items')
+        isChanged: this.model.hasChanged('topic') || this.model.hasChanged('items')
       }, {helpers: require('handlebars-helper')}) );
       return this;
     },
