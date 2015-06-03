@@ -10,7 +10,8 @@ define(function(require, exports, module) {
       'text/:account': 'wxText',
 			'news/:account': 'wxNews',
 			'blog': 'Blog',
-			'qgroup': 'QGroup'
+			'qgroup': 'QGroup',
+			'qchoice/:group': 'QChoice'
 		},
 		currentApp: null,
 		initialize: function() {
@@ -51,6 +52,13 @@ define(function(require, exports, module) {
 			if(this.currentApp) this.currentApp.undelegateEvents();
 			this.currentApp = require('apps/admin/modules/qgroup/view/list')();
 			setTitle('题库列表');
+		},
+		QChoice: function(group) {
+			if(this.currentApp) this.currentApp.undelegateEvents();
+			this.currentApp = require('apps/admin/modules/qchoice/view/list')({
+				rel: group
+			});
+			setTitle('试题维护');
 		}
 	});
 });
