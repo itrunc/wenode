@@ -1,0 +1,13 @@
+<div class="input-editor"></div>
+{{#if isItem}}
+  <div class="right-align">
+    <div class="switch">
+      <label>
+        不是答案
+        <input type="checkbox" name="isAnswer" {{#if isAnswer}}checked{{/if}}>
+        <span class="lever"></span>
+        是答案
+      </label>
+    </div>
+  </div>
+{{/if}}

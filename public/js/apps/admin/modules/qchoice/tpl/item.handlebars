@@ -1,0 +1,20 @@
+<li class="collection-header">
+  <div class="secondary-content">
+    <a href="#!" title="添加选项" class="btn-add-item"><i class="mdi-content-add"></i></a>
+    <a href="#!" title="编辑题纲" class="btn-edit"><i class="mdi-content-create"></i></a>
+    <a href="#!" title="删除试题" class="btn-remove"><i class="mdi-content-clear"></i></a>
+  </div>
+  <div class="editormd-html-preview">{{{model.preview}}}</div>
+</li>
+{{#each model.items}}
+  <li class="collection-item {{#gt isAnswer 0}}grey lighten-5{{/gt}}" data-index="{{@index}}">
+    <div class="secondary-content">
+      <a href="#!" title="编辑选项" class="btn-edit-item"><i class="mdi-content-create"></i></a>
+      <a href="#!" title="删除选项" class="btn-remove-item"><i class="mdi-content-clear"></i></a>
+    </div>
+    <div class="editormd-html-preview">{{{preview}}}</div>
+  </li>
+{{/each}}
+<li class="collection-item right-align {{#if isChanged}}{{else}}hide{{/if}}">
+  <a href="#!" title="保存" class="teal-text btn-save">保存更新</a>
+</li>

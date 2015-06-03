@@ -34,6 +34,13 @@ input[type=search] {
   overflow: inherit;
 }
 
+.collection li .editormd-html-preview {
+  padding: 0;
+}
+.collection li p {
+  margin: 0;
+}
+
 /*wx-news*/
 .wx-news {
   margin: 0.5rem 0px 1rem;
