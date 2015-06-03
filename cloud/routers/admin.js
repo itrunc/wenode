@@ -139,17 +139,17 @@ var ModelList = [{
 }, {
   name: 'wxBlogList',
   get: {
-    columns: ['title','markdown','html','preview','tags']
+    columns: ['title','content','tags']
   },
   post: {
-    columns: ['title','markdown','html','preview','tags'],
+    columns: ['title','content','tags'],
     convert: [{
       key: 'tags',
       func: toKeyword
     }]
   },
   put: {
-    columns: ['title','markdown','html','preview','tags'],
+    columns: ['title','content','tags'],
     convert: [{
       key: 'tags',
       func: toKeyword

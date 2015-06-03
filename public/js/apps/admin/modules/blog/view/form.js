@@ -13,7 +13,7 @@ define(function(require, exports, module) {
         tags: model.tags.join(',')
       }, {helpers: require('handlebars-helper')}) );
       this.editor = require('BBEditorMD')({
-        value: this.model.get('markdown')
+        value: this.model.get('content')
       });
       $(this.el).find('.input-editor').html(this.editor.el);
       return this;
@@ -24,9 +24,7 @@ define(function(require, exports, module) {
       this.model.set({
         title: data.title,
         tags: this.model.toTags(data.tags),
-        markdown: this.editor.getContent(),
-        html: this.editor.getHTML(),
-        preview: this.editor.getPreview()
+        content: this.editor.getContent()
       });
       if(this.model.isValid()) {
         this.model.save(null, {
@@ -35,7 +33,6 @@ define(function(require, exports, module) {
             dialog.toast('保存成功');
           },
           error: function(obj, resp, opt) {
-            //console.log(obj, resp, opt);
             dialog.toast(resp.responseText);
           }
         });

@@ -40,7 +40,22 @@ input[type=search] {
 .collection li p {
   margin: 0;
 }
-
+/*wx-markdown-preview*/
+.wx-markdown-preview {}
+.wx-markdown-preview table p,
+.wx-markdown-preview li p {
+  margin: 0;
+}
+.wx-markdown-preview ul li {
+  list-style-type: disc;
+}
+.wx-markdown-preview ol li {
+  list-style-type: decimal;
+}
+.wx-markdown-preview pre {
+  background-color: #f1f1f1;
+  padding: 8px;
+}
 /*wx-news*/
 .wx-news {
   margin: 0.5rem 0px 1rem;
