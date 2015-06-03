@@ -1,4 +1,5 @@
 define(function(require, exports, module) {
+	var showdownConverter = new require('showdown').Converter({extensions: ['table']});
 	module.exports = {
 		eq: function(v1,v2,options) {
 			if(v1==v2) {
@@ -22,6 +23,10 @@ define(function(require, exports, module) {
       } else {
         return options.inverse(this);
       }
-    }
+    },
+		showdown: function(markdown, options) {
+			console.log(markdown);
+			return showdownConverter.makeHtml(markdown);
+		}
 	}
 });
