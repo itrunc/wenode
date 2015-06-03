@@ -104,7 +104,6 @@ define(function(require, exports, module) {
       if(_.isFunction(formView.show)) {
         formView.show({
           success: function() {
-            console.log(formView);
             self.isLoad = false;
             self.list.add(formView.model);
           }
