@@ -3984,6 +3984,18 @@
     into          = into     || "head";
     callback      = callback || function() {};
 
+    var isExisted = false;
+    for(var i=0; i<editormd.loadFiles.js.length; i++) {
+      if(fileName === editormd.loadFiles.js[i] && fileName.indexOf('addons.min')<0) {
+        isExisted = true;
+        break;
+      }
+    }
+    if(isExisted) {
+      callback();
+      return;
+    }
+
     var script    = null;
     script        = document.createElement("script");
     script.id     = fileName.replace(/[\./]+/g, "-");
