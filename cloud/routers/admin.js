@@ -2,15 +2,6 @@ var _ = require('underscore'),
 	uds = require('underscore.string');
 var prefix = 'wx';
 
-var ObjectList = {
-  account: 'wxAccountList',
-  follower: 'wxFollowerList',
-  text: 'wxTextList',
-  news: 'wxNewsList',
-  blog: 'wxBlogList',
-  qgroup: 'wxQuestionGroupList'
-};
-
 function shouldLogin(req, res, next) {
   if(req.AV.user) {
     next();
@@ -32,6 +23,192 @@ function toKeyword(keywords) {
   return kws;
 }
 
+var ModelList = [{
+  name: 'wxAccountList',
+  get: {
+    columns: ['sourceid','code','name','type','intro','appid','appSecret','token','encodingAESKey','method']
+  },
+  post: {
+    columns: ['sourceid','code','name','type','intro','appid','appSecret','token','encodingAESKey','method'],
+    unique: ['sourceid'],
+    fixed: [{
+      key: 'token',
+      value: 'wenode.avosapps.com'
+    }],
+    check: [{
+      key: 'sourceid',
+      message: '原始ID不能为空'
+    }]
+  },
+  put: {
+    columns: ['intro','appSecret','encodingAESKey','method']
+  }
+}, {
+  name: 'wxFollowerList',
+  rel: {
+    name: 'wxAccountList',
+    column: 'account',
+    id: 'accountid'
+  },
+  get: {
+    columns: ['sourceid','email','phone','name','time','openid','status']
+  },
+  put: {
+    columns: ['name','email','phone']
+  }
+}, {
+  name: 'wxTextList',
+  rel: {
+    name: 'wxAccountList',
+    column: 'account',
+    id: 'accountid'
+  },
+  get: {
+    columns: ['accountid','content','keywords'],
+  },
+  post: {
+    columns: ['accountid','content','keywords'],
+    check: [{
+      key: 'accountid',
+      message: '必须关联公众号'
+    },{
+      key: 'content',
+      message: '消息内容不能为空'
+    }],
+    convert: [{
+      key: 'keywords',
+      func: toKeyword
+    }]
+  },
+  put: {
+    columns: ['content','keywords'],
+    check: [{
+      key: 'content',
+      message: '消息内容不能为空'
+    }],
+    convert: [{
+      key: 'keywords',
+      func: toKeyword
+    }]
+  }
+}, {
+  name: 'wxNewsList',
+  rel: {
+    name: 'wxAccountList',
+    column: 'account',
+    id: 'accountid'
+  },
+  get: {
+    columns: ['accountid','items','keywords']
+  },
+  post: {
+    columns: ['accountid','items','keywords'],
+    check: [{
+      key: 'accountid',
+      message: '必须关联公众号'
+    },{
+      key: 'items',
+      message: '图文消息不能为空'
+    },{
+      key: 'items',
+      message: '图文消息格式不对',
+      func: _.isArray,
+      reverse: true
+    }],
+    convert: [{
+      key: 'keywords',
+      func: toKeyword
+    }]
+  },
+  put: {
+    columns: ['items','keywords'],
+    check: [{
+      key: 'items',
+      message: '图文消息不能为空'
+    },{
+      key: 'items',
+      message: '图文消息格式不对',
+      func: _.isArray,
+      reverse: true
+    }],
+    convert: [{
+      key: 'keywords',
+      func: toKeyword
+    }]
+  }
+}, {
+  name: 'wxBlogList',
+  get: {
+    columns: ['title','markdown','html','preview','tags']
+  },
+  post: {
+    columns: ['title','markdown','html','preview','tags'],
+    convert: [{
+      key: 'tags',
+      func: toKeyword
+    }]
+  },
+  put: {
+    columns: ['title','markdown','html','preview','tags'],
+    convert: [{
+      key: 'tags',
+      func: toKeyword
+    }]
+  }
+}, {
+  name: 'wxQuestionGroupList',
+  get: {
+    columns: ['title','detail','tags']
+  },
+  post: {
+    columns: ['title','detail','tags'],
+    convert: [{
+      key: 'tags',
+      func: toKeyword
+    }]
+  },
+  put: {
+    columns: ['title','detail','tags'],
+    convert: [{
+      key: 'tags',
+      func: toKeyword
+    }]
+  }
+}, {
+  name: 'wxQuestionChoice',
+  rel: {
+    name: 'wxQuestionGroupList',
+    column: 'group',
+    id: 'groupid'
+  },
+  get: {
+    columns: ['groupid','markdown','html','preview','items']
+  },
+  post: {
+    columns: ['groupid','markdown','html','preview','items'],
+    check: [{
+      key: 'groupid',
+      message: '必须关联题库'
+    }, {
+      key: 'markdown',
+      message: '题纲内容不能为空'
+    }, {
+      key: 'items',
+      message: '选项不能为空'
+    }]
+  },
+  put: {
+    columns: ['markdown','html','preview','items'],
+    check: [{
+      key: 'markdown',
+      message: '题纲内容不能为空'
+    }, {
+      key: 'items',
+      message: '选项不能为空'
+    }]
+  }
+}];
+
 function filterData(req, res, next) {
   var data = {
     objectName: prefix + uds.classify(req.params.model),
@@ -39,9 +216,8 @@ function filterData(req, res, next) {
     body: req.body,
     unique: []
   };
-  var columns = [];
-  var relValue = '';
-  var RelObject;
+  var RelObject, chkItem;
+  var model = _.where(ModelList, {name: data.objectName});
   switch(req.route.method) {
     case 'get':
       data.body = {
@@ -50,178 +226,94 @@ function filterData(req, res, next) {
         rel: {},
         columns: []
       };
-      switch(data.objectName) {
-        case ObjectList.account:
-          data.body.columns = ['sourceid','code','name','type','intro','appid','appSecret','token','encodingAESKey','method'];
-          break;
-        
-        case ObjectList.follower:
-          relValue = req.query.rel;
-          if(relValue && _.isString(relValue)) {
-            data.body.rel = {
-              objectName: ObjectList.account,
-              column: 'account',
-              value: relValue
-            }
-          }
-          data.body.columns = ['sourceid','email','phone','name','time','openid','status'];
-          break;
-
-        case ObjectList.text:
-          relValue = req.query.rel;
-          if(relValue && _.isString(relValue)) {
-            data.body.rel = {
-              objectName: ObjectList.account,
-              column: 'account',
-              value: relValue
-            }
-          }
-          data.body.columns = ['accountid','content','keywords'];
-          break;
-
-        case ObjectList.news:
-          relValue = req.query.rel;
-          if(relValue && _.isString(relValue)) {
-            data.body.rel = {
-              objectName: ObjectList.account,
-              column: 'account',
-              value: relValue
-            }
-          }
-          data.body.columns = ['accountid','items','keywords'];
-          break;
-
-        case ObjectList.blog:
-          data.body.columns = ['title','markdown','html','preview','tags'];
-          break;
-
-        case ObjectList.qgroup:
-          data.body.columns = ['title','detail','tags'];
-          break;
-        default:
-          break;
+      if(model.length > 0) {
+        model = model[0];
+        if(model.get.columns.length > 0) data.body.columns = model.get.columns;
+        if(_.has(model, 'rel')) {
+          data.body.rel = _.extend(model.rel, {value: req.query.rel});
+        }
+      } else {
+        res.status(404).send('找不到对象');
+        return;
       }
       break;
     case 'post':
-      switch(data.objectName) {
-        case ObjectList.account:
-          columns = ['sourceid','code','name','type','intro','appid','appSecret','token','encodingAESKey','method'];
-          data.unique = ['sourceid'];
-          data.body = _.pick(data.body, columns);
-          data.body.token = 'wenode.avosapps.com';
-          if( _.isEmpty(data.body.sourceid) ) {
-            res.status(400).send('原始ID不能为空');
-            return;
+      if(model.length > 0) {
+        model = model[0];
+        data.body = _.pick(data.body, model.post.columns);
+        if(_.has(model.post, 'unique')) data.unique = model.post.unique;
+        if(_.has(model.post, 'convert')) {
+          model.post.convert.forEach(function(item){
+            data.body[item.key] = item.func(data.body[item.key]);
+          });
+        }
+        if(_.has(model.post, 'check')) {
+          for(var i in model.post.check) {
+            chkItem = model.post.check[i];
+            chkItem = _.extend({
+              func: _.isEmpty,
+              reverse: false
+            }, chkItem);
+            if(chkItem.reverse) {
+              if(!chkItem.func(data.body[chkItem.key])) {
+                res.status(400).send(chkItem.message);
+                return;
+              }
+            } else {
+              if(chkItem.func(data.body[chkItem.key])) {
+                res.status(400).send(chkItem.message);
+                return;
+              }
+            }
           }
-          break;
-
-        case ObjectList.text:
-          columns = ['accountid','content','keywords'];
-          data.body = _.pick(data.body, columns);
-          if(_.isEmpty(data.body.content)) {
-            res.status(400).send('消息内容不能为空');
-            return;
-          }
-          if(_.isEmpty(data.body.accountid)) {
-            res.status(400).send('必须关联公众号');
-            return;
-          }
-          data.body.keywords = toKeyword(data.body.keywords);
-          if(data.body.keywords.length <= 0) {
-            res.status(400).send('关键词格式不对');
-            return;
-          }
-          RelObject = AV.Object.extend(ObjectList.account);
-          data.body.account = new RelObject;
-          data.body.account.id = data.body.accountid;
-          break;
-
-        case ObjectList.news:
-          columns = ['accountid','items','keywords'];
-          data.body = _.pick(data.body, columns);
-          if(!_.isArray(data.body.items) || _.isEmpty(data.body.items)) {
-            res.status(400).send('图文消息列表格式不对');
-            return;
-          }
-          if(_.isEmpty(data.body.accountid)) {
-            res.status(400).send('必须关联公众号');
-            return;
-          }
-          data.body.keywords = toKeyword(data.body.keywords);
-          if(data.body.keywords.length <= 0) {
-            res.status(400).send('关键词格式不对');
-            return;
-          }
-          RelObject = AV.Object.extend(ObjectList.account);
-          data.body.account = new RelObject;
-          data.body.account.id = data.body.accountid;
-          break;
-
-        case ObjectList.blog:
-          columns = ['title','markdown','html','preview','tags'];
-          data.body = _.pick(data.body, columns);
-          data.body.tags = toKeyword(data.body.tags);
-          break;
-
-        case ObjectList.qgroup:
-          columns = ['title','detail','tags'];
-          data.body = _.pick(data.body, columns);
-          data.body.tags = toKeyword(data.body.tags);
-          break;
-        default:
-          res.status(400).send('对不起，不支持您请求创建的对象');
-          return;
+        }
+        if(_.has(model.post, 'fixed')) {
+          model.post.fixed.forEach(function(item){
+            data.body[item.key] = item.value;
+          });
+        }
+        if(_.has(model, 'rel')) {
+          RelObject = AV.Object.extend(model.rel.name);
+          data.body[model.rel.column] = new RelObject;
+          data.body[model.rel.column].id = data.body[model.rel.id];
+        }
+      } else {
+        res.status(404).send('找不到对象');
+        return;
       }
       break;
     case 'put':
-      switch(data.objectName) {
-        case ObjectList.account:
-          columns = ['intro','appSecret','encodingAESKey','method'];
-          data.body = _.pick(data.body, columns);
-          break;
-        case ObjectList.follower:
-          columns = ['name','email','phone'];
-          data.body = _.pick(data.body, columns);
-          break;
-        case ObjectList.text:
-          columns = ['content','keywords'];
-          data.body = _.pick(data.body, columns);
-          if(_.isEmpty(data.body.content)) {
-            res.status(400).send('消息内容不能为空');
-            return;
+      if(model.length > 0) {
+        model = model[0];
+        data.body = _.pick(data.body, model.put.columns);
+        if(_.has(model.put, 'convert')) {
+          model.put.convert.forEach(function(item){
+            data.body[item.key] = item.func(data.body[item.key]);
+          });
+        }
+        if(_.has(model.put, 'check')) {
+          for(var i in model.put.check) {
+            chkItem = model.put.check[i];
+            chkItem = _.extend({
+              func: _.isEmpty,
+              reverse: false
+            }, chkItem);
+            if(chkItem.reverse) {
+              if(!chkItem.func(data.body[chkItem.key])) {
+                res.status(400).send(chkItem.message);
+                return;
+              }
+            } else {
+              if(chkItem.func(data.body[chkItem.key])) {
+                res.status(400).send(chkItem.message);
+                return;
+              }
+            }
           }
-          data.body.keywords = toKeyword(data.body.keywords);
-          if(data.body.keywords.length <= 0) {
-            res.status(400).send('关键词格式不对');
-            return;
-          }
-          break;
-        case ObjectList.news:
-          columns = ['items','keywords'];
-          data.body = _.pick(data.body, columns);
-          if(!_.isArray(data.body.items) || _.isEmpty(data.body.items)) {
-            res.status(400).send('图文消息列表格式不对');
-            return;
-          }
-          data.body.keywords = toKeyword(data.body.keywords);
-          if(data.body.keywords.length <= 0) {
-            res.status(400).send('关键词格式不对');
-            return;
-          }
-          break;
-        case ObjectList.blog:
-          columns = ['title','markdown','html','preview','tags'];
-          data.body = _.pick(data.body, columns);
-          data.body.tags = toKeyword(data.body.tags);
-          break;
-        case ObjectList.qgroup:
-          columns = ['title','detail','tags'];
-          data.body = _.pick(data.body, columns);
-          data.body.tags = toKeyword(data.body.tags);
-          break;
-        default:
-          res.status(400).send('对不起，不支持您请求更新的对象');
-          return;
+        }
+      } else {
+        res.status(404).send('找不到对象');
+        return;
       }
       break;
     case 'delete':
@@ -247,7 +339,7 @@ function fetchModels(req, res) {
   var query = new AV.Query(AVObject);
   query.equalTo('owner', req.AV.user);
   if(!_.isEmpty(data.body.rel)) {
-    var AVRelObject = AV.Object.extend(data.body.rel.objectName),
+    var AVRelObject = AV.Object.extend(data.body.rel.name),
         relObject = new AVRelObject;
     relObject.id = data.body.rel.value;
     query.equalTo(data.body.rel.column, relObject);
